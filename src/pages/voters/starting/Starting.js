@@ -6,7 +6,7 @@ import avatar from "../../../assets/img/avatars/avatar.jpg";
 const Starting = () => {
   return (
     // <section className="landing-intro landing-bg pt-5 pt-lg-6 pb-5 pb-lg-7">
-    <Container className="landing-intro-content pt-5">
+    <Container>
       <div className="text-center mt-4">
         <h2>Afya Awards</h2>
         <p className="lead">Enter your phone number to vote</p>

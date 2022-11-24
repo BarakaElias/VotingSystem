@@ -22,6 +22,7 @@ import AwardCategories from "./pages/admin/categories/AwardCategories";
 import Results from "./pages/admin/results/Results";
 import Nominations from "./pages/admin/nominations/Nominations";
 import Nomination from "./pages/admin/nominations/Nomination";
+import AwardCycles from "./pages/admin/awardCycle/AwardCycles";
 
 const routes = [
   {
@@ -71,6 +72,10 @@ const routes = [
       {
         path: "nominations/:id",
         element: <Nomination />,
+      },
+      {
+        path: "award-cycles",
+        element: <AwardCycles />,
       },
     ],
   },

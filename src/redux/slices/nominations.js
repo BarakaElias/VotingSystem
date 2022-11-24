@@ -21,18 +21,21 @@ export const nominationsSlice = createSlice({
         category: "Afya Lifetime Achievement Award",
         questions: [
           {
+            id: 1,
             question:
               "What makes this indidvidual stand out when compared to his or her peers in the healthcare sector?",
             answer:
               "The thing that makes this individual stand out is becuase lorem ipsum dolar sit at met. Unsplash from the assets images that contains photos from unsplash. This is meant to fill up the space of the",
           },
           {
+            id: 2,
             question:
               "How would you objectively quantify the achievements of the nominee?",
             answer:
               "The thing that makes this individual stand out is becuase lorem ipsum dolar sit at met. Unsplash from the assets images that contains photos from unsplash. This is meant to fill up the space of the",
           },
           {
+            id: 3,
             question:
               "What are some of the nominee's notable achievments over the last year or so?",
             answer:

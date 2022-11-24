@@ -2,11 +2,12 @@
 @import "app";
 
 .box {
-    width: 30%;
+    width: 29%;
     height: 100%;
     position: relative;
     margin: 20px;
     border-radius: 10px;
+    z-index: 20;
 
     input{
         position: absolute;
@@ -15,17 +16,17 @@
         cursor: pointer;
         appearance: none;
         -webkit-appearance: none;
-        z-index: 20;
+        z-index: 22;
 
         &:checked {
             ~ {
                 .boxContent{
                     &::after{
-                        background: linear-gradient(to right, $secondary, $primary);
+                        background: linear-gradient(to right, #4e658f, $primary);
                     }
 
-                    h3, p{
-                        background: linear-gradient(to right, $secondary, $primary);
+                    h2, p{
+                        background: linear-gradient(to right, #43658f, $primary);
                         background-clip: text;
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;
@@ -44,7 +45,7 @@
         margin-bottom: 5px;
         padding: 30px;
         position: relative;
-
+        z-index: 20;
         &::before, &::after{
             content: '';
             position: absolute;
@@ -57,6 +58,7 @@
             background: rgb(255,255,255);
             box-shadow: 0 0 15px rgba(0,0,0,0.050);
             z-index: -1;
+
         }
         &::after{
             width: 105%;
@@ -67,3 +69,6 @@
     }
 }
 
+.voting-accordion{
+    z-index: -4;
+}

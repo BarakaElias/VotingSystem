@@ -33,7 +33,7 @@ const Footer = () => (
           <p className="mb-0">
             &copy; {new Date().getFullYear()} -{" "}
             <span href="/" className="text-muted">
-              Sema SMS by AimFirms All Rights Reserved
+              Afya Awards Voting System by barakaelias.com | All Rights Reserved
             </span>
           </p>
         </Col>

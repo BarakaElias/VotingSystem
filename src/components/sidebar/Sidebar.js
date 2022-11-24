@@ -19,8 +19,10 @@ const Sidebar = ({ items, showFooter = true }) => {
           <a className="sidebar-brand" href="/">
             {/* <Logo /> <span className="align-middle me-3">Bulk SMS</span> */}
             <div className="d-flex justify-content-space-around">
-              <img src={logo} alt="Logo" />
-              <span className="align-right me-3">Barelio Voting System</span>
+              {/* <img src={logo} alt="Logo" /> */}
+              <span className="align-right me-3">
+                Afya Awards Voting System
+              </span>
             </div>
             {/* <img src={logo} alt="logo" /> */}
           </a>

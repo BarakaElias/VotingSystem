@@ -17,7 +17,7 @@ const adminSection = [
     title: "Dashboard",
   },
   {
-    href: "/admin/award-cycle",
+    href: "/admin/award-cycles",
     icon: Award,
     title: "Award Cycle",
   },

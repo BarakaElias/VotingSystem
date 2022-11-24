@@ -1,17 +1,28 @@
 import React from "react";
-import { Card, Row, Container, Col } from "react-bootstrap";
+import {
+  Row,
+  Container,
+  Form,
+  Alert,
+  Button,
+  Accordion,
+} from "react-bootstrap";
 import MobileAuth from "../../../components/auth/MobileAuth";
 import avatar from "../../../assets/img/avatars/avatar.jpg";
 import VoteOption from "./VoteOption";
 import { useSelector } from "react-redux";
+import { Formik } from "formik";
+import { useNavigate } from "react-router-dom";
 
 const VotingStage = () => {
-  const candidates = useSelector((state) => state.candidates.candidates);
-  console.log(candidates);
+  const navigate = useNavigate();
+  const voteCandidates = useSelector(
+    (state) => state.voteCandidates.voteCandidates
+  );
   return (
     // <section className="landing-intro landing-bg pt-5 pt-lg-6 pb-5 pb-lg-7">
-    <React.Fragment>
-      <Container className="landing-intro-content">
+    <React.Fragment className="bg-light">
+      <Container>
         <div className="text-center mt-4">
           <h2>Afya Awards</h2>
           <p className="lead">Cast your votes. Select at least one category</p>
@@ -20,54 +31,69 @@ const VotingStage = () => {
         <Row className="align-items-center"></Row>
       </Container>
 
-      <section className="light-bg award-category-section pt-5 pb-5">
-        <Container>
-          <h1>Afya Lifetime Achievement Award</h1>
-          <Row>
-            <VoteOption />
-            <VoteOption />
-            <VoteOption />
-            <VoteOption />
-            <VoteOption />
-            <VoteOption />
-          </Row>
-        </Container>
-      </section>
-
-      <section className="light-bg award-category-section pt-5 pb-5">
-        <Container>
-          <h1>Award of Excellence in Specialized Care </h1>
-          <Row>
-            <VoteOption />
-            <VoteOption />
-            <VoteOption />
-          </Row>
-        </Container>
-      </section>
-
-      <section className="light-bg award-category-section pt-5 pb-5">
-        <Container>
-          <h1>Award of Excellence in Primary Healthcare </h1>
-          <Row>
-            <VoteOption />
-            <VoteOption />
-            <VoteOption />
-          </Row>
-        </Container>
-      </section>
-
-      <section className="light-bg award-category-section pt-5 pb-5">
-        <Container>
-          <h1>Award of Excellence in Health Financing </h1>
-          <Row>
-            <VoteOption />
-            <VoteOption />
-            <VoteOption />
-            <VoteOption />
-            <VoteOption />
-          </Row>
-        </Container>
-      </section>
+      <Formik
+        initialValues={{}}
+        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          try {
+            console.log("Submitting votes", values);
+            navigate("/confirm", { state: { ...values } });
+          } catch (e) {
+            console.log("Voting Stage", e);
+            setSubmitting(false);
+          }
+        }}
+      >
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values,
+        }) => (
+          <Form onSubmit={handleSubmit}>
+            {errors.submit && (
+              <Alert className="my-3" variant="danger">
+                <div className="alert-message">{errors.submit}</div>
+              </Alert>
+            )}
+            {voteCandidates.map((category) => (
+              <Container fluid="lg" key={category.id + "container"}>
+                <Accordion>
+                  <Accordion.Item eventKey={category.id}>
+                    <Accordion.Header>
+                      <h1>{category.title}</h1>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <div className="d-flex flex-wrap">
+                        {category.candidates.map((candidate) => (
+                          <VoteOption
+                            key={candidate.id + "voteOption"}
+                            candidate={candidate}
+                            handleChange={handleChange}
+                            category_title={category.title}
+                          />
+                        ))}
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              </Container>
+            ))}
+            <div className="text-center mt-3">
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                disabled={isSubmitting}
+              >
+                Cast Vote
+              </Button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </React.Fragment>
     // </section>
   );

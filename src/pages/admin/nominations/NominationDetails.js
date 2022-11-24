@@ -58,7 +58,7 @@ const NominationDetails = (props) => {
           <h2>Questions</h2>
 
           {nomination.questions.map((question) => (
-            <Row>
+            <Row key={question.id}>
               <h3 className="p-2">{question.question}</h3>
               <p>{question.answer}</p>
               <hr></hr>

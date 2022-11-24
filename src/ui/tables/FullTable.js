@@ -87,7 +87,6 @@ const FullTable = (props) => {
         <tbody className="table-hover" {...getTableBodyProps()}>
           {page.map((row) => {
             prepareRow(row);
-            console.log("FullTable", row.id);
             return (
               <tr key={i + "rowtr"} {...row.getRowProps()}>
                 {row.cells.map((cell) => {

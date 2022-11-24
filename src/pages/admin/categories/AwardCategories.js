@@ -46,11 +46,6 @@ const AwardCategories = () => {
     },
   ];
 
-  const validationSchema = Yup.object().shape({
-    award_title: Yup.string().required("Required title"),
-    award_category: Yup.string().required("Required description"),
-  });
-
   const closeModal = () => {
     setModalState({ isOpen: false });
   };

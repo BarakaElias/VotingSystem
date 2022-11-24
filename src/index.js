@@ -13,6 +13,8 @@ import LandingLayout from "./layouts/Landing";
 import Starting from "./pages/voters/starting/Starting";
 import MobileValidation from "./pages/voters/validation/MobileValidation";
 import VotingStage from "./pages/voters/votingstage/VotingStage";
+import ThankYou from "./pages/voters/thankyou/ThankYou";
+import ConfirmationPage from "./pages/voters/confirmation/ConfirmationPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -25,6 +27,8 @@ root.render(
           <Route path="starting" element={<Starting />} />
           <Route path="validate_code" element={<MobileValidation />} />
           <Route path="vote" element={<VotingStage />} />
+          <Route path="confirm" element={<ConfirmationPage />} />
+          <Route path="thank-you" element={<ThankYou />} />
         </Route>
       </Routes>
       <App />

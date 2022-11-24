@@ -14,14 +14,17 @@ function MobileAuth() {
   return (
     <Formik
       initialValues={{
-        name: "Baraka Urio",
+        username: "Baraka Urio",
         phone_number: "0624327900",
         country_code: "255",
         submit: false,
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string().max(255).required("Name is required"),
-        phone_number: Yup.string().max(10).required("Phone number is required"),
+        phone_number: Yup.string()
+          .max(13)
+          .min(10)
+          .required("Phone number is required"),
         country_code: Yup.string().max(4).required("Country code is required"),
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -105,6 +108,11 @@ function MobileAuth() {
                   onBlur={handleBlur}
                   onChange={handleChange}
                 ></Form.Control>
+                {!!touched.phone_number && (
+                  <Form.Control.Feedback type="invalid">
+                    {errors.phone_number}
+                  </Form.Control.Feedback>
+                )}
               </Form.Group>
             </Col>
           </Row>

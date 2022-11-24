@@ -4,20 +4,27 @@ import MobileAuth from "../../../components/auth/MobileAuth";
 import avatar from "../../../assets/img/avatars/avatar.jpg";
 import ValidationCode from "../../../components/auth/ValidationCode";
 
-const VoteOption = () => {
+const VoteOption = (props) => {
+  const { candidate, category_title, handleChange } = props;
   return (
     <div className="box">
-      <input type="radio" name="abc" id="" />
-      <div class="boxContent">
+      <input
+        type="radio"
+        onChange={handleChange}
+        value={candidate.name}
+        name={category_title}
+        id=""
+      />
+      <div className="boxContent">
         <img
           src={avatar}
           alt="Chris Wood"
-          className="img-fluid rounded-circle"
-          width="152"
+          className="img-fluid rounded"
+          width="100%"
           height="152"
         />
-        <h3>Name</h3>
-        <p>Subtitle</p>
+        <h2>{candidate.name}</h2>
+        <p>{candidate.company}</p>
       </div>
     </div>
   );

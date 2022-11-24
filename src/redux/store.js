@@ -6,6 +6,8 @@ import votersReducer from "./slices/voters";
 import awardCategories from "./slices/awardCategories";
 import votes from "./slices/votes";
 import nominations from "./slices/nominations";
+import voteCandidates from "./slices/voteCandidates";
+import awardCycles from "./slices/awardCycles";
 
 export const store = configureStore({
   reducer: {
@@ -15,5 +17,7 @@ export const store = configureStore({
     awardCategories: awardCategories,
     votes: votes,
     nominations: nominations,
+    voteCandidates: voteCandidates,
+    awardCycles: awardCycles,
   },
 });

@@ -10,32 +10,64 @@ import {
 } from "react-bootstrap";
 import avatar from "../../../assets/img/avatars/avatar.jpg";
 import FlatSimpleTable from "../../../ui/tables/FlatSimpleTable";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 import { useNavigate, useLocation } from "react-router-dom";
 
 const ConfirmationPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const candidates = useSelector((state) => state.candidates.candidates);
+  const categories = useSelector(
+    (state) => state.awardCategories.awardCategories
+  );
   const vote = location.state;
 
+  console.log("Confirmation", vote);
   //getting the current date
   const now = new Date();
   const date = `${now.getDate()}/${now.getMonth()}/${now.getFullYear()}`;
 
   const values = [];
+  const votes = [];
 
-  const postVote = () => {
+  //prepare votes
+  Object.entries(vote).map(([key, value]) => {
+    const vot = [];
+    vot.push(Number(key));
+    vot.push(Number(value));
+    votes.push(vot);
+  });
+
+  // prepareVotes();
+  console.log("The prepared votes", votes);
+
+  //prepares row values for the summary table
+  Object.entries(vote).map(([key, value]) => {
+    const catId = Number(key);
+    const the_cat = categories.find((category) => category.id === catId);
+    const the_cand = candidates.find((cand) => cand.id === Number(value));
+    values.push({
+      category: the_cat.title,
+      candidate: the_cand.name,
+    });
+  });
+
+  const postVote = async () => {
     console.log("posting vote", vote);
+    try {
+      const response = await axios.post("http://127.0.0.1:3001/votes", {
+        params: votes,
+      });
+      console.log("Submitting votes confiration", response);
+    } catch (err) {
+      console.log("Submitting votes confirmation", err);
+    }
     navigate("/thank-you");
   };
 
-  Object.entries(vote).map(([key, value]) => {
-    values.push({ category: key, candidate: value });
-  });
-
   const num_categories = `Categories: ${values.length}`;
-
-  console.log("Values for table", values);
 
   const cols = [
     {

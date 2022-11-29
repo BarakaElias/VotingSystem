@@ -10,10 +10,18 @@ import { useSelector } from "react-redux";
 import { Trash, Eye } from "react-feather";
 import { useNavigate } from "react-router-dom";
 
+//rtk query
+import { useGetAllCandidatesQuery } from "../../../redux/slices/candidates";
+
 const Candidates = () => {
   const navigate = useNavigate();
+
+  const { data, error, isLoading } = useGetAllCandidatesQuery();
+  if (error === 401) {
+    navigate("/admin/401");
+  }
+  console.log("Candidates RTK QUERY", error);
   const handleClick = (id) => {
-    console.log(id);
     navigate(`/admin/candidates/${id}`);
   };
   const rows = useSelector((state) => state.candidates.candidates);

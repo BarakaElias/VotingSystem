@@ -1,7 +1,7 @@
 import { createContext, useEffect, useReducer } from "react";
-
+import { setToken } from "../redux/slices/authSlice";
 // import axios from "../utils/axios";
-// import axios from "axios";
+import axios from "axios";
 import { isValidToken, setSession } from "../utils/jwt";
 
 const INITIALIZE = "INITIALIZE";
@@ -54,81 +54,75 @@ function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(JWTReducer, initialState);
 
   //this one
-  // useEffect(() => {
-  //   const initialize = async () => {
-  //     console.log("initialzing from initialize");
-  //     try {
-  //       const accessToken = window.localStorage.getItem("accessToken");
+  useEffect(() => {
+    const initialize = async () => {
+      console.log("initialzing from initialize");
+      try {
+        const accessToken = window.localStorage.getItem("accessToken");
 
-  //       if (accessToken && isValidToken(accessToken)) {
-  //         setSession(accessToken);
-  //         console.log("isvalid");
+        if (accessToken && isValidToken(accessToken)) {
+          setToken(accessToken);
+          setSession(accessToken);
+          console.log("isvalid");
 
-  //         const response = await axios.get(
-  //           "http://localhost/semaapi/public/api/auth/token_gets_user"
-  //         );
+          const response = await axios.get(
+            "http://localhost/semaapi/public/api/auth/token_gets_user"
+          );
 
-  //         console.log(response);
-  //         // console.log("token valid going to api");
-  //         // const { user } = response.data;
+          console.log(response);
+          // console.log("token valid going to api");
+          // const { user } = response.data;
 
-  //         // dispatch({
-  //         //   type: INITIALIZE,
-  //         //   payload: {
-  //         //     isAuthenticated: true,
-  //         //     user,
-  //         //   },
-  //         // });
-  //       } else {
-  //         console.log("token not found or invalid");
-  //         dispatch({
-  //           type: INITIALIZE,
-  //           payload: {
-  //             isAuthenticated: false,
-  //             user: null,
-  //           },
-  //         });
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //       dispatch({
-  //         type: INITIALIZE,
-  //         payload: {
-  //           isAuthenticated: false,
-  //           user: null,
-  //         },
-  //       });
-  //     }
-  //   };
+          // dispatch({
+          //   type: INITIALIZE,
+          //   payload: {
+          //     isAuthenticated: true,
+          //     user,
+          //   },
+          // });
+        } else {
+          console.log("token not found or invalid");
+          dispatch({
+            type: INITIALIZE,
+            payload: {
+              isAuthenticated: false,
+              user: null,
+            },
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        dispatch({
+          type: INITIALIZE,
+          payload: {
+            isAuthenticated: false,
+            user: null,
+          },
+        });
+      }
+    };
 
-  //   initialize();
-  // }, []);
+    initialize();
+  }, []);
 
   // const signIn = async (email, password) => {
-  //   console.log("inside isgnin:", password);
-  //   axios.defaults.withCredentials = true;
-  //   axios
-  //     .get("http://localhost/semaapi/public/sanctum/csrf-cookie")
-  //     .then((response) => {
-  //       axios
-  //         .post("http://localhost/semaapi/public/api/loginuser", {
-  //           params: { email, password },
-  //         })
-  //         .then((response) => {
-  //           console.log("signin res:", response.data);
-  //           const { accessToken, user } = response.data;
+  //   console.log("inside isgnin:", password + email);
+  //   // axios.defaults.withCredentials = true;
 
-  //           setSession(accessToken);
-  //           dispatch({ type: SIGN_IN, payload: { user } });
-  //           return "1";
-  //         })
-  //         .catch((err) => {
-  //           console.log("signin error:", err);
-  //         });
+  //   axios
+  //     .post("http://127.0.0.1/users/login", {
+  //       params: { email, password },
+  //     })
+  //     .then((response) => {
+  //       console.log("signin res:", response.data);
+  //       const { accessToken, user } = response.data;
+
+  //       setSession(accessToken);
+  //       dispatch({ type: SIGN_IN, payload: { user } });
+  //       return "1";
   //     })
   //     .catch((err) => {
-  //       console.log("csrf err:", err);
-  //       return "0";
+  //       console.log("signin error:", err);
   //     });
   // };
 
@@ -141,26 +135,31 @@ function AuthProvider({ children }) {
   // };
 
   //this one
-  // const signIn = async (email, password) => {
-  //   axios.defaults.withCredentials = true;
-  //   const csrf_res = await get_csrf();
-  //   try {
-  //     const response = await axios.post("loginuser", {
-  //       params: { email, password },
-  //     });
+  const signIn = async (email, password) => {
+    axios.defaults.withCredentials = true;
+    try {
+      console.log("JWT sign in: ", email + password);
+      const response = await axios.post("http://127.0.0.1:3001/users/login", {
+        params: { email, password },
+      });
 
-  //     console.log("sign in", response);
-
-  //     const { accessToken, user } = response.data;
-  //     window.localStorage.setItem("user", user);
-  //     setSession(accessToken);
-  //     dispatch({ type: SIGN_IN, payload: { user } });
-  //     return user;
-  //   } catch (e) {
-  //     console.log("sign in:", e.message);
-  //     return e.message;
-  //   }
-  // };
+      console.log("sign in", response);
+      if (response.status === 200) {
+        const { token, user } = response.data;
+        window.localStorage.setItem("user", user);
+        setToken(token);
+        setSession(token);
+        dispatch({ type: SIGN_IN, payload: { user } });
+        console.log("JWT Context", token);
+        return user;
+      } else {
+        console.log("res wasnt 200");
+      }
+    } catch (e) {
+      console.log("sign in:", e.response);
+      return e.response;
+    }
+  };
 
   // const signIn = async (email, password) => {
   //   // axios.get().then((response) => {
@@ -241,7 +240,7 @@ function AuthProvider({ children }) {
       value={{
         ...state,
         method: "jwt",
-        // signIn,
+        signIn,
         signOut,
         // signUp,
         // resetPassword,

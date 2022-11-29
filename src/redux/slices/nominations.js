@@ -1,5 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import axios from "axios";
+
+export const nominationApi = createApi({
+  reducerPath: "nominationApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://127.0.0.1:3001",
+    prepareHeaders: (headers, { getState }) => {
+      const token = "";
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  endpoints: (builder) => ({
+    getAllNominations: builder.query({
+      query: () => "nominations",
+      transformErrorResponse: (response, meta, arg) => response.status,
+    }),
+    getNomination: builder.query({
+      query: (id) => `/nominations/${id}`,
+    }),
+  }),
+});
+
+export const { useGetAllNominationsQuery, useGetNominationQuery } =
+  nominationApi;
 
 export const nominationsSlice = createSlice({
   name: "nominations",

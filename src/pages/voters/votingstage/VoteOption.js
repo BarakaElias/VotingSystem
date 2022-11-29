@@ -5,14 +5,14 @@ import avatar from "../../../assets/img/avatars/avatar.jpg";
 import ValidationCode from "../../../components/auth/ValidationCode";
 
 const VoteOption = (props) => {
-  const { candidate, category_title, handleChange } = props;
+  const { candidate, category, handleChange } = props;
   return (
     <div className="box">
       <input
         type="radio"
         onChange={handleChange}
-        value={candidate.name}
-        name={category_title}
+        value={candidate.id}
+        name={category.id}
         id=""
       />
       <div className="boxContent">

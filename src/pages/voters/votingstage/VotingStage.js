@@ -19,9 +19,10 @@ const VotingStage = () => {
   const voteCandidates = useSelector(
     (state) => state.voteCandidates.voteCandidates
   );
+
   return (
     // <section className="landing-intro landing-bg pt-5 pt-lg-6 pb-5 pb-lg-7">
-    <React.Fragment className="bg-light">
+    <React.Fragment>
       <Container>
         <div className="text-center mt-4">
           <h2>Afya Awards</h2>
@@ -36,6 +37,7 @@ const VotingStage = () => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             console.log("Submitting votes", values);
+
             navigate("/confirm", { state: { ...values } });
           } catch (e) {
             console.log("Voting Stage", e);
@@ -72,7 +74,7 @@ const VotingStage = () => {
                             key={candidate.id + "voteOption"}
                             candidate={candidate}
                             handleChange={handleChange}
-                            category_title={category.title}
+                            category={category}
                           />
                         ))}
                       </div>

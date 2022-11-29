@@ -9,9 +9,14 @@ import {
 import { Eye, Trash } from "react-feather";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useGetAllNominationsQuery } from "../../../redux/slices/nominations";
 
 const Nominations = () => {
   const navigate = useNavigate();
+  const { data, error, isLoading } = useGetAllNominationsQuery();
+  if (error === 401) {
+    navigate("/admin/401");
+  }
   const handleClick = (id) => {
     navigate(`/admin/nominations/${id}`);
   };

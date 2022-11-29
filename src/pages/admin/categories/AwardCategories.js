@@ -10,9 +10,19 @@ import {
 import ModalForm from "../../../ui/modals/ModalForm";
 import AwardCategoryForm from "./AwardCategoryForm";
 import { useSelector } from "react-redux";
+
+//rtk query
+import { useGetAllCategoriesQuery } from "../../../redux/slices/awardCategories";
+import { useNavigate } from "react-router-dom";
 let Yup = require("yup");
 
 const AwardCategories = () => {
+  const navigate = useNavigate();
+  const { data, error, isLoading } = useGetAllCategoriesQuery();
+  if (error === 401) {
+    navigate("/admin/401");
+  }
+  console.log("Categories rtk", data);
   const rows = useSelector((state) => state.awardCategories.awardCategories);
   const columns = [
     {

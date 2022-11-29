@@ -5,6 +5,8 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import country_dial_codes from "../../utils/country_dial_codes";
 import { Alert, Button, Form, Row, Col } from "react-bootstrap";
+import axios from "axios";
+import { setVoter } from "../../redux/slices/voters";
 
 import useAuth from "../../hooks/useAuth";
 
@@ -16,7 +18,7 @@ function MobileAuth() {
       initialValues={{
         username: "Baraka Urio",
         phone_number: "0624327900",
-        country_code: "255",
+        country_code: "93",
         submit: false,
       }}
       validationSchema={Yup.object().shape({
@@ -29,8 +31,36 @@ function MobileAuth() {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          console.log("Mobile Auth", "Validating");
-          navigate("/validate_code");
+          const phone =
+            values.phone_number.length === 10
+              ? values.country_code.slice(1) + values.phone_number.slice(1)
+              : values.country_code.slize(1) + values.phone_number;
+          setVoter({ name: values.username, phone_number: phone });
+          console.log("Mobile Auth sending msg to: ", phone);
+          const response = await axios.post(
+            "https://apiotp.beem.africa/v1/request",
+            {
+              appId: 206,
+              msisdn: phone,
+            },
+            {
+              auth: {
+                username: "b1d2218977b5d109",
+                password:
+                  "OTFmMWViOGQ4MDQ2YmRhN2U3YzVlZDlmZmU0NjE3MTEwYWMxZWY5MjI1YWEzYmY5NTQ3ZGFlZjRmNDllMzE0Yg==",
+              },
+            }
+          );
+          console.log("Mobile Auth", response);
+          if (response.status === 200) {
+            navigate("/validate_code", {
+              state: {
+                name: values.username,
+                phone_number: phone,
+                pinId: response.data.data.pinId,
+              },
+            });
+          }
         } catch (error) {
           console.log("errs", error);
         }

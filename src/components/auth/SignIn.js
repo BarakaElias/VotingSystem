@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { Alert, Button, Form } from "react-bootstrap";
 
-import useAuth from "../../hooks/useAuth";
+import useAuth from "./../../hooks/useAuth";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -27,41 +27,25 @@ function SignIn() {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          const useR = await signIn(values.email, values.password);
+          // const useR = ""; //await signIn(values.email, values.password);
 
-          // console.log("alert error:", useR);
+          const user = await signIn(values.email, values.password);
 
-          // console.log("after awaiting", useR.isSemaAdmin);
-          if (useR === "Network Error") {
-            // setStatus({ success: false });
-            // setErrors({ submit: "Network Error" });
-            // setSubmitting(false);
-            // console.log("theres a network error");
-            throw "Network Error";
-          }
-          if (useR) {
-            if (useR.isSemaAdmin) {
-              navigate("/admin/welcome");
-            } else {
-              navigate("/dash");
-            }
+          console.log("Sign in comoponent", user);
+          if (user.status === 404) {
+            setStatus({ success: false });
+            setErrors({ submit: "Incorrect Email or Password" });
+            setSubmitting(false);
           }
 
-          // navigate("/admin/admin_manage_sender_ids");
+          navigate("/admin/dashboard");
         } catch (error) {
           console.log("errs", error);
 
           const message = error.message || "Something went wrong";
 
           setStatus({ success: false });
-          setErrors({ submit: message });
-          if (error.message === "useR is undefined") {
-            setErrors({ submit: "Email or password is wrong" });
-          } else if (error === "Network Error") {
-            setErrors({
-              submit: "Netwokr Error! Please check your internet connection.",
-            });
-          }
+          setErrors({ submit: "Something went wrong. Please try again later" });
           setSubmitting(false);
         }
       }}

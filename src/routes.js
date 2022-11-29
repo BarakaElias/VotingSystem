@@ -6,6 +6,9 @@ import LandingLayout from "./layouts/Landing";
 import DocLayout from "./layouts/Doc";
 import AuthLayout from "./layouts/Auth";
 
+//Auth Pages
+import Page401 from "./pages/auth/Page401";
+
 //Guards
 import AuthGuard from "./components/guards/AuthGuard";
 import AdminGuard from "./components/guards/AdminGuard";
@@ -76,6 +79,10 @@ const routes = [
       {
         path: "award-cycles",
         element: <AwardCycles />,
+      },
+      {
+        path: "401",
+        element: <Page401 />,
       },
     ],
   },

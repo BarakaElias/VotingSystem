@@ -1,6 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+export const voteCandidateApi = createApi({
+  reducerPath: "voteCandidateApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://127.0.0.1:3001/",
+    prepareHeaders: (headers, { getState }) => {
+      // const token = (getState() as RootState).auth.token;
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJiYXJha2FAYWltZmlybXMuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjY5NDY5MjYyLCJleHAiOjE2Njk0NzI4NjJ9.1YpQMafOuo60gj0TxvMWSlrW6ZdizGESQXWtFGEAo0w";
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  endpoints: (builder) => ({
+    getAllVoteCandidates: builder.query({
+      query: () => "vote-candidates",
+      transformErrorResponse: (response, meta, arg) => response.status,
+    }),
+  }),
+});
+
+export const { useGetAllVoteCandidatesQuery } = voteCandidateApi;
+
 export const voteCandidatesSlice = createSlice({
   name: "voteCandidates",
   initialState: {
@@ -12,18 +38,18 @@ export const voteCandidatesSlice = createSlice({
           {
             id: 1,
             name: "Baraka Urio",
-            company: "Aim Firms Ltd, Developer",
+            company: "Aim Firms Ltd",
             image: "",
           },
           {
             id: 2,
-            name: "John Doe",
-            company: "Kick R Design",
+            name: "Isaac Urio",
+            company: "Aim Firms Ltd",
             image: "",
           },
           {
             id: 3,
-            name: "Rachel John",
+            name: "Angel Walter",
             company: "BB Advocates",
             image: "",
           },

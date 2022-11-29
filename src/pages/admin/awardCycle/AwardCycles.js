@@ -46,7 +46,7 @@ const AwardCycles = () => {
       <Helmet title="Award Cycles" />
       <Container fluid className="p-0">
         <Row>
-          <div className="d-flex flex-row justify-content-between">
+          <div className="d-flex flex-row flex-wrap justify-content-between">
             <div>
               <h1 className="h3 mb-3">Award Cycles</h1>
             </div>

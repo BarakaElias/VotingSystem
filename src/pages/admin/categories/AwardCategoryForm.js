@@ -4,10 +4,15 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Alert, Button, Form } from "react-bootstrap";
+//rtk query
+import { useAddCategoryQuery } from "../../../redux/slices/awardCategories";
 
 // import useAuth from "../../hooks/useAuth";
 
 const AwardCategoryForm = (props) => {
+  // function addCategory() {
+  //   const { data, error, isLoading } = useAddCategoryQuery();
+  // }
   const { closeModal } = props;
   return (
     <Formik

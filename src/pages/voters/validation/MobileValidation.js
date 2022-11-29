@@ -2,9 +2,13 @@ import React from "react";
 import { Card, Row, Container, Col } from "react-bootstrap";
 import MobileAuth from "../../../components/auth/MobileAuth";
 import avatar from "../../../assets/img/avatars/avatar.jpg";
+import { useSelector } from "react-redux";
 import ValidationCode from "../../../components/auth/ValidationCode";
-
+import { useLocation } from "react-router-dom";
 const MobileValidation = () => {
+  const location = useLocation();
+  const voter = location.state;
+  console.log("Mobile Validation", voter);
   return (
     <Container className="">
       <div className="text-center mt-4">
@@ -26,7 +30,7 @@ const MobileValidation = () => {
                 height="132"
               />
             </div>
-            <ValidationCode />
+            <ValidationCode voter={voter} />
           </div>
           {/* <Link to="/auth/sign-up">Create a free account</Link> */}
         </Card.Body>

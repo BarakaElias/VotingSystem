@@ -17,7 +17,7 @@ import ThankYou from "./pages/voters/thankyou/ThankYou";
 import ConfirmationPage from "./pages/voters/confirmation/ConfirmationPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
+console.log("Initializing here at index");
 root.render(
   <BrowserRouter>
     <Provider store={store}>

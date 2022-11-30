@@ -20,7 +20,7 @@ const Candidates = () => {
   if (error === 401) {
     navigate("/admin/401");
   }
-  console.log("Candidates RTK QUERY", error);
+  console.log("Candidates", data);
   const handleClick = (id) => {
     navigate(`/admin/candidates/${id}`);
   };

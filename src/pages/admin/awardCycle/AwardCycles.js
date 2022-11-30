@@ -11,14 +11,26 @@ import { Trash, Eye } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import AwardCycle from "./AwardCycle";
 import AwardCycleForm from "./AwardCycleForm";
-
+import { useGetAllAwardCyclesQuery } from "../../../redux/slices/awardCycles";
+import ColorRingLoader from "../../../ui/loaders/ColorRingLoader";
 const AwardCycles = () => {
-  const awardCycles = useSelector((state) => state.awardCycles.awardCycles);
   const navigate = useNavigate();
-  const handleClick = (id) => {
-    console.log(id);
-    navigate(`/admin/candidates/${id}`);
-  };
+  let loadingIcon = <ColorRingLoader />;
+  var awardCycles = useSelector((state) => state.awardCycles.awardCycles);
+
+  const { data, error, isLoading } = useGetAllAwardCyclesQuery();
+  if (error === 401) {
+    navigate("/admin/401");
+  } else if (error === 404) {
+    console.log("rtk query it returns 404 when no route found");
+  }
+  if (isLoading) {
+  } else {
+    loadingIcon = null;
+    if (data) {
+      awardCycles = data;
+    }
+  }
 
   const [modalState, setModalState] = useState({ isOpen: false });
 
@@ -43,6 +55,7 @@ const AwardCycles = () => {
   return (
     <React.Fragment>
       {form}
+      {loadingIcon}
       <Helmet title="Award Cycles" />
       <Container fluid className="p-0">
         <Row>

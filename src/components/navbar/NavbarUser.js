@@ -17,7 +17,7 @@ const NavbarUser = () => {
 
   const handleLogout = () => {
     dispatch(logUserOut());
-    navigate("/auth/sign-in");
+    navigate("/sign-in");
   };
   // const user = useSelector((state: RootStateOrAny) => //state.user.value);
   return (

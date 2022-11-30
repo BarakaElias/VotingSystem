@@ -9,6 +9,7 @@ export const candidateApi = createApi({
     baseUrl: "http://127.0.0.1:3001/",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().authSlice.token;
+
       // const token =
       //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJiYXJha2FAYWltZmlybXMuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjY5NDY5MjYyLCJleHAiOjE2Njk0NzI4NjJ9.1YpQMafOuo60gj0TxvMWSlrW6ZdizGESQXWtFGEAo0w";
       if (token) {
@@ -17,10 +18,12 @@ export const candidateApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ["Candidates"],
   endpoints: (builder) => ({
     getAllCandidates: builder.query({
       query: () => "candidates",
       transformErrorResponse: (response, meta, arg) => response.status,
+      providesTags: ["Candidates"],
     }),
     getCandidate: builder.query({
       query: (id) => `/candidates/${id}`,

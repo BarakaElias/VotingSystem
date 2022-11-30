@@ -7,13 +7,14 @@ export const nominationApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://127.0.0.1:3001",
     prepareHeaders: (headers, { getState }) => {
-      const token = "";
+      const token = getState().authSlice.token;
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
+  tagTypes: ["Nominations"],
   endpoints: (builder) => ({
     getAllNominations: builder.query({
       query: () => "nominations",

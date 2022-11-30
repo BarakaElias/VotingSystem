@@ -18,6 +18,7 @@ import { AuthProvider } from "./contexts/JWTContext";
 
 function App() {
   const content = useRoutes(routes);
+  console.log("Initializing here at app");
 
   return (
     <HelmetProvider>

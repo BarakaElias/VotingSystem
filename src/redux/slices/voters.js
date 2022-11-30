@@ -7,15 +7,14 @@ export const voterApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://127.0.0.1:3001/",
     prepareHeaders: (headers, { getState }) => {
-      // const token = (getState() as RootState).auth.token;
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJiYXJha2FAYWltZmlybXMuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjY5NDY5MjYyLCJleHAiOjE2Njk0NzI4NjJ9.1YpQMafOuo60gj0TxvMWSlrW6ZdizGESQXWtFGEAo0w";
+      const token = getState().authSlice.token;
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
+  tagTypes: "Voters",
   endpoints: (builder) => ({
     getAllVoters: builder.query({
       query: () => "voters",
@@ -26,6 +25,7 @@ export const voterApi = createApi({
         url: `/voters/${id}`,
         method: "POST",
       }),
+      invalidatesTags: ["Voters"],
       transformErrorResponse: (response, meta, org) => response.data,
     }),
   }),

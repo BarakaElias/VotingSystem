@@ -4,11 +4,14 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Alert, Button, Form } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../redux/slices/authSlice";
 
 import useAuth from "./../../hooks/useAuth";
 
 function SignIn() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { signIn } = useAuth();
 
   return (
@@ -37,6 +40,8 @@ function SignIn() {
             setErrors({ submit: "Incorrect Email or Password" });
             setSubmitting(false);
           }
+          dispatch(setToken(user.token));
+          console.log("SignIn dispatched token", user.token);
 
           navigate("/admin/dashboard");
         } catch (error) {

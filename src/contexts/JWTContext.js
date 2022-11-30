@@ -1,5 +1,6 @@
 import { createContext, useEffect, useReducer } from "react";
 import { setToken } from "../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 // import axios from "../utils/axios";
 import axios from "axios";
 import { isValidToken, setSession } from "../utils/jwt";
@@ -51,6 +52,7 @@ const JWTReducer = (state, action) => {
 const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
+  const authDispatch = useDispatch();
   const [state, dispatch] = useReducer(JWTReducer, initialState);
 
   //this one
@@ -61,15 +63,16 @@ function AuthProvider({ children }) {
         const accessToken = window.localStorage.getItem("accessToken");
 
         if (accessToken && isValidToken(accessToken)) {
-          setToken(accessToken);
+          console.log("JWT checks what is set as token ", accessToken);
+          authDispatch(setToken(accessToken));
           setSession(accessToken);
           console.log("isvalid");
 
-          const response = await axios.get(
-            "http://localhost/semaapi/public/api/auth/token_gets_user"
-          );
+          // const response = await axios.get(
+          //   "http://localhost/semaapi/public/api/auth/token_gets_user"
+          // );
 
-          console.log(response);
+          // console.log(response);
           // console.log("token valid going to api");
           // const { user } = response.data;
 
@@ -161,43 +164,10 @@ function AuthProvider({ children }) {
     }
   };
 
-  // const signIn = async (email, password) => {
-  //   // axios.get().then((response) => {
-  //   //   // Login...
-  //   // });
-  //   const csrf = await axios.get(
-  //     "http://localhost/semaapi/public/sanctum/csrf-cookie"
-  //   );
-  //   const response = await axios.get(
-  //     "http://localhost/semaapi/public/api/loginuser",
-  //     {
-  //       params: { email: "baraka@aimfirms.com", password: "LoginPass123" },
-  //     }
-  //   );
-
-  //   // console.log(response);
-  //   // const response = await axios.post(
-  //   //   "http://localhost/semaapi/public/api/loginuser/",
-  //   //   {
-  //   //     email,
-  //   //     password,
-  //   //   }
-  //   // );
-  //   console.log("singin", response);
-  //   const { accessToken, user } = response.data;
-
-  //   setSession(accessToken);
-  //   dispatch({
-  //     type: SIGN_IN,
-  //     payload: {
-  //       user,
-  //     },
-  //   });
-  // };
-
   const signOut = async () => {
     setSession(null);
     dispatch({ type: SIGN_OUT });
+    dispatch(setToken(null));
   };
 
   // const signUp = async (

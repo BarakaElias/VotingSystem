@@ -7,7 +7,7 @@ import awardCategories from "./slices/awardCategories";
 import votes from "./slices/votes";
 import nominations from "./slices/nominations";
 import voteCandidates from "./slices/voteCandidates";
-import awardCycles from "./slices/awardCycles";
+import awardCycles, { awardCycleApi } from "./slices/awardCycles";
 import authSlice from "./slices/authSlice";
 
 //RTK QUERY
@@ -16,6 +16,7 @@ import { categoryApi } from "./slices/awardCategories";
 import { nominationApi } from "./slices/nominations";
 import { voteCandidateApi } from "./slices/voteCandidates";
 import { voterApi } from "./slices/voters";
+import { voteApi } from "./slices/votes";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 
 // export const store = configureStore({
@@ -37,6 +38,8 @@ export const store = configureStore({
     [nominationApi.reducerPath]: nominationApi.reducer,
     [voteCandidateApi.reducerPath]: voteCandidateApi.reducer,
     [voterApi.reducerPath]: voterApi.reducer,
+    [voteApi.reducerPath]: voteApi.reducer,
+    [awardCycleApi.reducerPath]: awardCycleApi.reducer,
     authSlice: authSlice,
   },
   middleware: (getDefaultMiddleware) =>
@@ -46,6 +49,8 @@ export const store = configureStore({
       nominationApi.middleware,
       voteCandidateApi.middleware,
       voterApi.middleware,
+      voteApi.middleware,
+      awardCycleApi.middleware,
     ]),
 });
 

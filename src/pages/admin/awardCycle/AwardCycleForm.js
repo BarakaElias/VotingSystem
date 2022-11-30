@@ -4,11 +4,18 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Alert, Button, Form } from "react-bootstrap";
-
+import { useCreateAwardCycleMutation } from "../../../redux/slices/awardCycles";
+import ColorRingLoader from "../../../ui/loaders/ColorRingLoader";
 // import useAuth from "../../hooks/useAuth";
 
 const AwardCycleForm = (props) => {
+  var loader = null;
   const { closeModal } = props;
+  const [createAwardCycle, { isLoading, isUpdating }] =
+    useCreateAwardCycleMutation();
+  function createAward(vals) {
+    // const response = useCreateAwardCycleQuery(values);
+  }
   return (
     <Formik
       initialValues={{
@@ -22,6 +29,15 @@ const AwardCycleForm = (props) => {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
+          const { title, description } = values;
+          createAwardCycle(values);
+          if (isLoading) {
+            loader = <ColorRingLoader />;
+          } else {
+            loader = null;
+          }
+          closeModal();
+
           console.log(values);
         } catch (error) {
           console.log("errs", error);
@@ -51,6 +67,7 @@ const AwardCycleForm = (props) => {
         values,
       }) => (
         <Form onSubmit={handleSubmit}>
+          {loader}
           {/* <Alert className="my-3" variant="primary">
                   <div className="alert-message">
                     Use <strong>demo@bootlab.io</strong> and{" "}

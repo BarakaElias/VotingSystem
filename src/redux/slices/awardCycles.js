@@ -1,5 +1,54 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import axios from "axios";
+
+export const awardCycleApi = createApi({
+  reducerPath: "awardCycleApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://127.0.0.1:3001/",
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().authSlice.token;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  tagTypes: ["AwardCycles"],
+  endpoints: (builder) => ({
+    getAllAwardCycles: builder.query({
+      query: () => "award-cycles",
+      providesTags: ["AwardCycles"],
+      transformErrorResponse: (response, meta, arg) => response.status,
+    }),
+    createAwardCycle: builder.mutation({
+      query: (award_cycle) => ({
+        url: "award-cycles",
+        method: "POST",
+        body: award_cycle,
+      }),
+      invalidatesTags: ["AwardCycles"],
+    }),
+    updateAwardCycle: builder.mutation({
+      query: (award_cycle) => ({
+        url: "award-cycles",
+        method: "UPDATE",
+        body: award_cycle,
+      }),
+      invalidatesTags: ["AwardCycles"],
+    }),
+    deleteAwardCycle: builder.mutation({
+      query: (id) => ({
+        url: `award-cycles/${id}`,
+        method: "DELETE",
+        body: id,
+      }),
+      invalidatesTags: ["AwardCycles"],
+    }),
+  }),
+});
+export const { useGetAllAwardCyclesQuery, useCreateAwardCycleMutation } =
+  awardCycleApi;
 
 export const awardCyclesSlice = createSlice({
   name: "awardCycles",

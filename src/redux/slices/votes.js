@@ -1,5 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import axios from "axios";
+
+export const voteApi = createApi({
+  reducerPath: "voteApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://127.0.0.1:3001/",
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().authSlice.token;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  tagTypes: "Votes",
+  endpoints: (builder) => ({
+    getAllVotes: builder.query({
+      query: () => "votes",
+      transformErrorResponse: (response, meta, arg) => response.status,
+      invalidatesTags: ["Votes"],
+    }),
+  }),
+});
+export const { useGetAllVotesQuery } = voteApi;
 
 export const votesSlice = createSlice({
   name: "votes",
@@ -105,7 +129,7 @@ export const votesSlice = createSlice({
   },
   reducers: {
     setVotes: (state, payload) => {
-      state.votes = [];
+      state.votes = payload;
     },
   },
 });

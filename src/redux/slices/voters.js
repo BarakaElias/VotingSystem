@@ -20,6 +20,10 @@ export const voterApi = createApi({
       query: () => "voters",
       transformErrorResponse: (response, meta, arg) => response.status,
     }),
+    getNumVoters: builder.query({
+      query: () => "voters/count",
+      transformErrorResponse: (response, meta, arg) => response.status,
+    }),
     deleteVoter: builder.mutation({
       query: (id) => ({
         url: `/voters/${id}`,
@@ -31,7 +35,11 @@ export const voterApi = createApi({
   }),
 });
 
-export const { useGetAllVotersQuery, useDeleteVoterQuery } = voterApi;
+export const {
+  useGetAllVotersQuery,
+  useDeleteVoterQuery,
+  useGetNumVotersQuery,
+} = voterApi;
 
 export const votersSlice = createSlice({
   name: "voters",
@@ -87,6 +95,8 @@ export const votersSlice = createSlice({
         voted: true,
       },
     ],
+    token: "",
+    userId: null,
     voter: {
       name: "",
       phone_number: "",
@@ -100,6 +110,14 @@ export const votersSlice = createSlice({
     setVoter: (state, votee) => {
       state.voter = votee;
       console.log("Inside setVoter reducer", votee);
+    },
+    setUserToken: (state, token) => {
+      console.log("Voter slice: setting voter token", token.payload);
+      state.token = token.payload;
+    },
+    setUserId: (state, id) => {
+      console.log("Voter slice: setting voter id", id.payload);
+      state.userId = id.payload;
     },
     setPinId: (state, action) => {
       state.voter["pinId"] = action.payload;
@@ -120,4 +138,6 @@ export function fetchVoters() {
 
 export const { setVoter } = votersSlice.actions;
 export const { setPinId } = votersSlice.actions;
+export const { setUserToken } = votersSlice.actions;
+export const { setUserId } = votersSlice.actions;
 export default votersSlice.reducer;

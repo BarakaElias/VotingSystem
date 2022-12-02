@@ -1,5 +1,6 @@
 import { createContext, useEffect, useReducer } from "react";
 import { setToken } from "../redux/slices/authSlice";
+import { setUserToken, setUserId } from "../redux/slices/voters";
 import { useDispatch } from "react-redux";
 // import axios from "../utils/axios";
 import axios from "axios";
@@ -61,6 +62,8 @@ function AuthProvider({ children }) {
       console.log("initialzing from initialize");
       try {
         const accessToken = window.localStorage.getItem("accessToken");
+        const userAccessToken = window.localStorage.getItem("userAccessToken");
+        const userId = window.localStorage.getItem("userId");
 
         if (accessToken && isValidToken(accessToken)) {
           console.log("JWT checks what is set as token ", accessToken);
@@ -83,6 +86,12 @@ function AuthProvider({ children }) {
           //     user,
           //   },
           // });
+        } else if (userAccessToken) {
+          console.log("JWTContext: Found voter token :", userAccessToken);
+          console.log("JWTContext: Found userId: ", userId);
+          authDispatch(setUserToken(userAccessToken));
+          authDispatch(setUserId(userId));
+          setSession(userAccessToken);
         } else {
           console.log("token not found or invalid");
           dispatch({

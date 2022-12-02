@@ -12,18 +12,25 @@ import AwardCategoryForm from "./AwardCategoryForm";
 import { useSelector } from "react-redux";
 
 //rtk query
-import { useGetAllCategoriesQuery } from "../../../redux/slices/awardCategories";
+import {
+  useGetAllCategoriesQuery,
+  useDeleteCategoryMutation,
+} from "../../../redux/slices/awardCategories";
 import { useNavigate } from "react-router-dom";
 let Yup = require("yup");
 
 const AwardCategories = () => {
+  const [deleteCategory] = useDeleteCategoryMutation();
   const navigate = useNavigate();
-  const { data, error, isLoading } = useGetAllCategoriesQuery();
+  var rows = [];
+  const { data = [], error, isLoading } = useGetAllCategoriesQuery();
   if (error === 401) {
     navigate("/admin/401");
   }
+  if (!isLoading) {
+    rows = data;
+  }
   console.log("Categories rtk", data);
-  const rows = useSelector((state) => state.awardCategories.awardCategories);
   const columns = [
     {
       Header: "Title",
@@ -44,12 +51,17 @@ const AwardCategories = () => {
     },
     {
       Header: "",
-      accessor: "actions",
-      Cell: ({ row }) => {
+      accessor: "id",
+      Cell: ({ value }) => {
         return (
           <div className="d-flex flex-row justify-content-between">
-            <Edit className="m-3" size="24" color="#293042" />
-            <Trash className="m-3" size="24" color="#d34d49" />
+            {/* <Edit className="m-3" size="24" color="#293042" /> */}
+            <Trash
+              onClick={(event) => deleteCategory(value)}
+              className="m-3"
+              size="24"
+              color="#d34d49"
+            />
           </div>
         );
       },

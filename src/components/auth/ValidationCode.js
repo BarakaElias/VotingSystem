@@ -4,19 +4,44 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Alert, Button, Form, Row, Col } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { setUserToken, setUserId, setVoter } from "../../redux/slices/voters";
 import axios from "axios";
+import Countdown from "react-countdown";
 // import useAuth from "../../hooks/useAuth";
 
 function ValidationCode(props) {
+  const dispatch = useDispatch();
   const { voter } = props;
   console.log("From code form", voter);
   const navigate = useNavigate();
 
+  const Completionist = () => {
+    return <h1 className="text-danger text-center">Code expired!</h1>;
+  };
+  // Renderer callback with condition
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      return <Completionist />;
+    } else {
+      // Render a countdown
+      return (
+        <h1 className="text-center">
+          {minutes}:{seconds}
+        </h1>
+      );
+    }
+  };
+
   const sendVoterToBack = async (voter) => {
+    console.log("Sending voter to db");
     try {
-      const response = axios.post("http://127.0.0.1:3001/voters", {
+      const response = await axios.post("http://127.0.0.1:3001/voters", {
         params: voter,
       });
+      return response;
+
       console.log("Sending voter to db", response);
     } catch (err) {
       console.log("Sending voter to db", err);
@@ -35,8 +60,7 @@ function ValidationCode(props) {
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           console.log("Mobile Auth", "Validating");
-          navigate("/vote");
-
+          //Verify the pin that was sent
           const response = await axios.post(
             "https://apiotp.beem.africa/v1/verify",
             {
@@ -51,13 +75,22 @@ function ValidationCode(props) {
               },
             }
           );
+          // const res = await sendVoterToBack(voter);
+
           console.log("Validation code: ", response);
           if (response.status === 200) {
-            const res = await sendVoterToBack(voter);
+            // const res = await sendVoterToBack(voter);
             console.log("Sending voter to back", res);
+            const res = await sendVoterToBack(voter);
 
             if (res.status === 200) {
-              // navigate("/vote");
+              console.log("After recording to database", res);
+              dispatch(setUserToken(res.data.token));
+              dispatch(setUserId(res.data.voter.id));
+              dispatch(setVoter(res.data.voter));
+              window.localStorage.setItem("userAccessToken", res.data.token);
+              window.localStorage.setItem("userId", res.data.voter.id);
+              navigate("/vote");
             } else {
               setErrors({
                 submit: "Error recording to database.Please try again",
@@ -97,6 +130,12 @@ function ValidationCode(props) {
             </Alert>
           )}
 
+          <Countdown
+            zeroPadTime={2}
+            renderer={renderer}
+            date={Date.now() + 100000}
+          />
+
           <Form.Group className="mb-3">
             <Form.Label>Code</Form.Label>
             <Form.Control
@@ -125,7 +164,7 @@ function ValidationCode(props) {
               size="lg"
               disabled={isSubmitting}
             >
-              Validate
+              Verify
             </Button>
           </div>
         </Form>

@@ -1,6 +1,51 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // import { useNavigate } from "react-router";
 import axios from "axios";
+
+export const userApi = createApi({
+  reducerPath: "userApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://127.0.0.1:3001/",
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().authSlice.token;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  tagTypes: ["Users"],
+  endpoints: (builder) => ({
+    getAllUsers: builder.query({
+      query: () => "users",
+      transformErrorResponse: (response, meta, arg) => response.status,
+    }),
+    addUser: builder.mutation({
+      query: (newUser) => ({
+        url: "users",
+        method: "POST",
+        body: newUser,
+      }),
+      invalidatesTags: ["Users"],
+      transformErrorResponse: (response, meta, arg) => response.data,
+    }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: "users",
+        method: "DELETE",
+        body: { id: id },
+      }),
+      invalidatesTags: ["Users"],
+    }),
+  }),
+});
+
+export const {
+  useGetAllUsersQuery,
+  useDeleteUserMutation,
+  useAddUserMutation,
+} = userApi;
 
 export const userSlice = createSlice({
   name: "user",

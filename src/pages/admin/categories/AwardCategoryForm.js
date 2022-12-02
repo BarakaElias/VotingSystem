@@ -5,32 +5,34 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { Alert, Button, Form } from "react-bootstrap";
 //rtk query
-import { useAddCategoryQuery } from "../../../redux/slices/awardCategories";
+import { useAddCategoryMutation } from "../../../redux/slices/awardCategories";
 
 // import useAuth from "../../hooks/useAuth";
 
 const AwardCategoryForm = (props) => {
-  // function addCategory() {
-  //   const { data, error, isLoading } = useAddCategoryQuery();
-  // }
+  const [addCategory] = useAddCategoryMutation();
   const { closeModal } = props;
   return (
     <Formik
       initialValues={{
-        email: "baraka@aimfirms.com",
-        password: "LoginPass123",
+        title: "",
+        description: "",
         submit: false,
       }}
       validationSchema={Yup.object().shape({
-        email: Yup.string()
-          .email("Must be a valid email")
-          .max(255)
-          .required("Email is required"),
-        password: Yup.string().max(255).required("Password is required"),
+        title: Yup.string().max(255).required("Title is required"),
+        description: Yup.string().max(255),
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          console.log(values);
+          const result = await addCategory({
+            title: values.title,
+            description: values.description,
+          });
+          if (result) {
+            closeModal();
+          }
+          console.log(result);
         } catch (error) {
           console.log("errs", error);
 
@@ -76,16 +78,16 @@ const AwardCategoryForm = (props) => {
             <Form.Control
               size="lg"
               type="text"
-              name="award_title"
+              name="title"
               placeholder=""
-              value={values.award_title}
-              isInvalid={Boolean(touched.award_title && errors.award_title)}
+              value={values.title}
+              isInvalid={Boolean(touched.title && errors.title)}
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {!!touched.award_title && (
+            {!!touched.title && (
               <Form.Control.Feedback type="invalid">
-                {errors.award_title}
+                {errors.title}
               </Form.Control.Feedback>
             )}
           </Form.Group>
@@ -94,19 +96,17 @@ const AwardCategoryForm = (props) => {
             <Form.Control
               size="lg"
               type="text"
-              name="award_description"
+              name="description"
               as="textarea"
               placeholder=""
-              value={values.award_description}
-              isInvalid={Boolean(
-                touched.award_description && errors.award_description
-              )}
+              value={values.description}
+              isInvalid={Boolean(touched.description && errors.description)}
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {!!touched.award_description && (
+            {!!touched.description && (
               <Form.Control.Feedback type="invalid">
-                {errors.award_description}
+                {errors.description}
               </Form.Control.Feedback>
             )}
           </Form.Group>

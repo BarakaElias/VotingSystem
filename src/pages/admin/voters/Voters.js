@@ -12,12 +12,16 @@ import { useGetAllVotersQuery } from "../../../redux/slices/voters";
 
 const Voters = () => {
   const navigate = useNavigate();
-  const { data, error, isLoading } = useGetAllVotersQuery();
+  var rows = [];
+  const { data = [], error, isLoading } = useGetAllVotersQuery();
   if (error === 401) {
     navigate("/admin/401");
   }
-  console.log("Voters from api", data);
-  const rows = useSelector((state) => state.voters.voters);
+  if (!isLoading) {
+    rows = data;
+    console.log("Voters from api", data);
+  }
+  // const rows = useSelector((state) => state.voters.voters);
 
   const columns = [
     {

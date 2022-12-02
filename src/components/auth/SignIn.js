@@ -35,15 +35,17 @@ function SignIn() {
           const user = await signIn(values.email, values.password);
 
           console.log("Sign in comoponent", user);
-          if (user.status === 404) {
+          if (user.status === 200) {
+          } else if (user.status === 404) {
             setStatus({ success: false });
             setErrors({ submit: "Incorrect Email or Password" });
             setSubmitting(false);
-          }
-          dispatch(setToken(user.token));
-          console.log("SignIn dispatched token", user.token);
+          } else {
+            dispatch(setToken(user.token));
+            console.log("SignIn dispatched token", user.token);
 
-          navigate("/admin/dashboard");
+            navigate("/admin/dashboard");
+          }
         } catch (error) {
           console.log("errs", error);
 

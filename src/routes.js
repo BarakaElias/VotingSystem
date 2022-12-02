@@ -26,6 +26,8 @@ import Results from "./pages/admin/results/Results";
 import Nominations from "./pages/admin/nominations/Nominations";
 import Nomination from "./pages/admin/nominations/Nomination";
 import AwardCycles from "./pages/admin/awardCycle/AwardCycles";
+import CreateUser from "./pages/admin/users/CreateUser";
+import Users from "./pages/admin/users/Users";
 
 const routes = [
   {
@@ -79,6 +81,19 @@ const routes = [
       {
         path: "award-cycles",
         element: <AwardCycles />,
+      },
+      {
+        path: "users",
+        children: [
+          {
+            path: "all-users",
+            element: <Users />,
+          },
+          {
+            path: "create",
+            element: <CreateUser />,
+          },
+        ],
       },
       {
         path: "401",

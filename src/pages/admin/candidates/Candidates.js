@@ -15,16 +15,18 @@ import { useGetAllCandidatesQuery } from "../../../redux/slices/candidates";
 
 const Candidates = () => {
   const navigate = useNavigate();
-
+  var rows = [];
   const { data, error, isLoading } = useGetAllCandidatesQuery();
   if (error === 401) {
     navigate("/admin/401");
+  }
+  if (!isLoading) {
+    rows = data;
   }
   console.log("Candidates", data);
   const handleClick = (id) => {
     navigate(`/admin/candidates/${id}`);
   };
-  const rows = useSelector((state) => state.candidates.candidates);
 
   const columns = [
     {

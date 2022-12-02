@@ -14,13 +14,16 @@ import { useGetAllNominationsQuery } from "../../../redux/slices/nominations";
 const Nominations = () => {
   const navigate = useNavigate();
   const { data, error, isLoading } = useGetAllNominationsQuery();
+  var rows = [];
   if (error === 401) {
     navigate("/admin/401");
+  }
+  if (!isLoading) {
+    rows = data;
   }
   const handleClick = (id) => {
     navigate(`/admin/nominations/${id}`);
   };
-  const rows = useSelector((state) => state.nominations.nominations);
 
   const columns = [
     {

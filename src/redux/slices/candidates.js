@@ -25,13 +25,18 @@ export const candidateApi = createApi({
       transformErrorResponse: (response, meta, arg) => response.status,
       providesTags: ["Candidates"],
     }),
+    getCandidatesNum: builder.query({
+      query: () => "candidates/count/count",
+      transformErrorResponse: (response, meta, arg) => response.status,
+    }),
     getCandidate: builder.query({
       query: (id) => `/candidates/${id}`,
     }),
   }),
 });
 
-export const { useGetAllCandidatesQuery } = candidateApi;
+export const { useGetAllCandidatesQuery, useGetCandidatesNumQuery } =
+  candidateApi;
 
 export const candidatesSlice = createSlice({
   name: "candidates",

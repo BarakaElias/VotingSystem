@@ -62,6 +62,21 @@ const settingsSection = [
     icon: Archive,
     title: "Ballot Positions",
   },
+  {
+    href: "/admin/users",
+    icon: Users,
+    title: "Users",
+    children: [
+      {
+        href: "/admin/users/all-users",
+        title: "All Users",
+      },
+      {
+        href: "/admin/users/create",
+        title: "Create User",
+      },
+    ],
+  },
 ];
 
 const navItems = [

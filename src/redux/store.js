@@ -17,6 +17,7 @@ import { nominationApi } from "./slices/nominations";
 import { voteCandidateApi } from "./slices/voteCandidates";
 import { voterApi } from "./slices/voters";
 import { voteApi } from "./slices/votes";
+import { userApi } from "./slices/user";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 
 // export const store = configureStore({
@@ -40,6 +41,7 @@ export const store = configureStore({
     [voterApi.reducerPath]: voterApi.reducer,
     [voteApi.reducerPath]: voteApi.reducer,
     [awardCycleApi.reducerPath]: awardCycleApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
     authSlice: authSlice,
   },
   middleware: (getDefaultMiddleware) =>
@@ -51,6 +53,7 @@ export const store = configureStore({
       voterApi.middleware,
       voteApi.middleware,
       awardCycleApi.middleware,
+      userApi.middleware,
     ]),
 });
 

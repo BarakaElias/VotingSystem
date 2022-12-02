@@ -11,8 +11,8 @@ const VoteOption = (props) => {
       <input
         type="radio"
         onChange={handleChange}
-        value={candidate.id}
-        name={category.id}
+        value={candidate.name}
+        name={category.title}
         id=""
       />
       <div className="boxContent">

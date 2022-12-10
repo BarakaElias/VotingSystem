@@ -34,9 +34,7 @@ const NavbarUser = () => {
             className="avatar img-fluid rounded-circle me-1"
             alt="Chris Wood"
           />
-          <span className="text-dark">
-            {user ? user.username : "Baraka Urio"}
-          </span>
+          <span className="text-dark">{user ? user.name : "No user"}</span>
         </Dropdown.Toggle>
       </span>
       <Dropdown.Menu drop="end">

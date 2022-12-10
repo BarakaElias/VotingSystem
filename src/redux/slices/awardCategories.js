@@ -46,6 +46,7 @@ export const categoryApi = createApi({
 
 export const {
   useGetAllCategoriesQuery,
+  useLazyGetAllCategoriesQuery,
   useAddCategoryMutation,
   useDeleteCategoryMutation,
   useGetNumberOfCategoriesQuery,

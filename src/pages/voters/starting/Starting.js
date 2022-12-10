@@ -12,7 +12,7 @@ const Starting = () => {
         <p className="lead">Enter your phone number to vote</p>
       </div>
 
-      <Card>
+      <Card className="linear-grad-card">
         <Card.Body>
           <div className="m-sm-4">
             <div className="text-center">

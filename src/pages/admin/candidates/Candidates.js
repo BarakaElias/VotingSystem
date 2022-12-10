@@ -11,9 +11,13 @@ import { Trash, Eye } from "react-feather";
 import { useNavigate } from "react-router-dom";
 
 //rtk query
-import { useGetAllCandidatesQuery } from "../../../redux/slices/candidates";
+import {
+  useGetAllCandidatesQuery,
+  useDeleteCandidateMutation,
+} from "../../../redux/slices/candidates";
 
 const Candidates = () => {
+  const [deleteCandidate] = useDeleteCandidateMutation();
   const navigate = useNavigate();
   var rows = [];
   const { data, error, isLoading } = useGetAllCandidatesQuery();
@@ -45,14 +49,14 @@ const Candidates = () => {
     },
     {
       Header: "Company/Organisation",
-      accessor: "company",
+      accessor: "company_name",
       // Filter: ColumnFilter,
     },
-    {
-      Header: "Company Address",
-      accessor: "company_address",
-      // Filter: ColumnFilter,
-    },
+    // {
+    //   Header: "Company Address",
+    //   accessor: "company_address",
+    //   // Filter: ColumnFilter,
+    // },
     {
       Header: "Phone number",
       accessor: "phone_number",
@@ -64,18 +68,25 @@ const Candidates = () => {
       // Filter: ColumnFilter,
     },
     {
-      Header: "",
-      accessor: "actions",
-      Cell: ({ row }) => {
+      Header: "Action",
+      accessor: "id",
+      Cell: ({ value }) => {
+        console.log("Candidate action: ", value);
         return (
           <div className="d-flex flex-row justify-content-between">
-            <Eye
+            {/* <Eye
               onClick={(event) => handleClick(row.original.id)}
               className="m-3"
               size="24"
               color="#293042"
+            /> */}
+            <Trash
+              style={{ style: { cursor: "pointer" } }}
+              onClick={(event) => deleteCandidate(value)}
+              className="m-3"
+              size="24"
+              color="#d34d49"
             />
-            <Trash className="m-3" size="24" color="#d34d49" />
           </div>
         );
       },

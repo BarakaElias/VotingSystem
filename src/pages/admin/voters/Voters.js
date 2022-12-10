@@ -32,10 +32,6 @@ const Voters = () => {
       Header: "Phone number",
       accessor: "phone_number",
     },
-    {
-      Header: "Country",
-      accessor: "country",
-    },
   ];
   return (
     <React.Fragment>

@@ -135,12 +135,7 @@ function SignUp() {
             </Form.Select>
           </Form.Group>
           <div className="text-center mt-3">
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              disabled={isSubmitting}
-            >
+            <Button type="submit" variant="primary" size="lg">
               Create User
             </Button>
           </div>

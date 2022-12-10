@@ -7,16 +7,7 @@ export const voteCandidateApi = createApi({
   reducerPath: "voteCandidateApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://127.0.0.1:3001/",
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().authSlice.token;
-      console.log("votecandidates rtk", token);
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
   }),
-  tagTypes: "Candidates",
   endpoints: (builder) => ({
     getAllVoteCandidates: builder.query({
       query: () => "vote-candidates",

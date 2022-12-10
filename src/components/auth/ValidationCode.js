@@ -17,7 +17,9 @@ function ValidationCode(props) {
   const navigate = useNavigate();
 
   const Completionist = () => {
-    return <h1 className="text-danger text-center">Code expired!</h1>;
+    return (
+      <h1 className="text-danger text-center">Verification code expired!</h1>
+    );
   };
   // Renderer callback with condition
   const renderer = ({ hours, minutes, seconds, completed }) => {
@@ -80,8 +82,8 @@ function ValidationCode(props) {
           console.log("Validation code: ", response);
           if (response.status === 200) {
             // const res = await sendVoterToBack(voter);
-            console.log("Sending voter to back", res);
             const res = await sendVoterToBack(voter);
+            console.log("Sending voter to back", res);
 
             if (res.status === 200) {
               console.log("After recording to database", res);
@@ -91,6 +93,9 @@ function ValidationCode(props) {
               window.localStorage.setItem("userAccessToken", res.data.token);
               window.localStorage.setItem("userId", res.data.voter.id);
               navigate("/vote");
+            } else if (res.status === 403 || res.status === 204) {
+              console.log("You've already voted");
+              navigate("/thank-you");
             } else {
               setErrors({
                 submit: "Error recording to database.Please try again",

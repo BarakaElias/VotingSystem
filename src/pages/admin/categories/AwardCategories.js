@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Row, Container, Button, Col, Modal } from "react-bootstrap";
 import { Edit, Trash } from "react-feather";
 import { Helmet } from "react-helmet-async";
@@ -14,16 +14,23 @@ import { useSelector } from "react-redux";
 //rtk query
 import {
   useGetAllCategoriesQuery,
+  useLazyGetAllCategoriesQuery,
   useDeleteCategoryMutation,
 } from "../../../redux/slices/awardCategories";
 import { useNavigate } from "react-router-dom";
 let Yup = require("yup");
 
 const AwardCategories = () => {
+  const token = useSelector((state) => state.authSlice.token);
+  console.log("token", token);
   const [deleteCategory] = useDeleteCategoryMutation();
   const navigate = useNavigate();
   var rows = [];
-  const { data = [], error, isLoading } = useGetAllCategoriesQuery();
+  const [trigger, { data = [], error, isLoading }] =
+    useLazyGetAllCategoriesQuery();
+  useEffect(() => {
+    setTimeout(() => trigger(), 500);
+  }, []);
   if (error === 401) {
     navigate("/admin/401");
   }

@@ -4,16 +4,24 @@ import { Helmet } from "react-helmet-async";
 import CandidateDetails from "./CandidateDetails";
 import CandidateProfile from "./CandidateProfile";
 import { useSelector } from "react-redux";
+import { useGetAllCandidatesQuery } from "../../../redux/slices/candidates";
 import { useParams } from "react-router-dom";
 
 const Candidate = (props) => {
   const { id } = useParams();
+  const { candidate } = useGetAllCandidatesQuery(undefined, {
+    selectFromResult: ({ data }) => ({
+      candidate: data.find((cand) => cand.id === id),
+    }),
+  });
 
-  const candidate = useSelector((state) =>
-    state.candidates.candidates.find(
-      (candidate) => candidate.id === parseInt(id)
-    )
-  );
+  console.log("Single candidate", candidate);
+
+  // const candidate = useSelector((state) =>
+  //   state.candidates.candidates.find(
+  //     (candidate) => candidate.id === parseInt(id)
+  //   )
+  // );
   console.log("Candidate componenet: " + candidate.name);
 
   return (

@@ -25,6 +25,14 @@ export const candidateApi = createApi({
       transformErrorResponse: (response, meta, arg) => response.status,
       providesTags: ["Candidates"],
     }),
+    deleteCandidate: builder.mutation({
+      query: (tid) => ({
+        url: `candidates/${tid}`,
+        method: "DELETE",
+        body: { id: tid },
+      }),
+      invalidatesTags: ["Candidates"],
+    }),
     getCandidatesNum: builder.query({
       query: () => "candidates/count/count",
       transformErrorResponse: (response, meta, arg) => response.status,
@@ -35,8 +43,11 @@ export const candidateApi = createApi({
   }),
 });
 
-export const { useGetAllCandidatesQuery, useGetCandidatesNumQuery } =
-  candidateApi;
+export const {
+  useGetAllCandidatesQuery,
+  useGetCandidatesNumQuery,
+  useDeleteCandidateMutation,
+} = candidateApi;
 
 export const candidatesSlice = createSlice({
   name: "candidates",

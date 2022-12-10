@@ -18,8 +18,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GlobalFilter } from "./TableFilters";
 
 const FlatSimpleTable = (props) => {
-  const { values, cols } = props;
+  const { values, cols, k } = props;
   let i = 0;
+  let j = 99;
 
   const data = React.useMemo(() => values, [values]);
   const columns = React.useMemo(() => cols, []);
@@ -49,9 +50,9 @@ const FlatSimpleTable = (props) => {
       >
         <thead className="thead-dark">
           {headerGroups.map((headerGroup) => (
-            <tr key={i + "tr"} {...headerGroup.getHeaderGroupProps()}>
+            <tr key={i++ + k} {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th key={column.Header}>
+                <th key={j++ + k}>
                   <div
                     className="mb-1"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -68,10 +69,10 @@ const FlatSimpleTable = (props) => {
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr key={i + "rowtr"} {...row.getRowProps()}>
+              <tr key={j++} {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
-                    <td key={i + "td"} {...cell.getCellProps()}>
+                    <td key={j} {...cell.getCellProps()}>
                       {cell.render("Cell")}
                     </td>
                   );

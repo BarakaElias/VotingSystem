@@ -13,8 +13,13 @@ import VoteOption from "./VoteOption";
 import { useSelector } from "react-redux";
 import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { useGetAllVoteCandidatesQuery } from "../../../redux/slices/voteCandidates";
 
 const VotingStage = () => {
+  const { data = [], isLoading } = useGetAllVoteCandidatesQuery();
+  if (!isLoading) {
+    console.log("Data voting stage", data);
+  }
   const navigate = useNavigate();
   const voteCandidates = useSelector(
     (state) => state.voteCandidates.voteCandidates
@@ -60,7 +65,7 @@ const VotingStage = () => {
                 <div className="alert-message">{errors.submit}</div>
               </Alert>
             )}
-            {voteCandidates.map((category) => (
+            {data.map((category) => (
               <Container fluid="lg" key={category.id + "container"}>
                 <Accordion>
                   <Accordion.Item eventKey={category.id}>

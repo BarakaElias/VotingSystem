@@ -40,7 +40,11 @@ const routes = [
   },
   {
     path: "/admin",
-    element: <DashboardLayout />,
+    element: (
+      <DashboardLayout>
+        <AdminGuard />
+      </DashboardLayout>
+    ),
     children: [
       {
         path: "dashboard",

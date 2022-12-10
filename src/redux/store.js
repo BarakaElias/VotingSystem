@@ -8,6 +8,7 @@ import votes from "./slices/votes";
 import nominations from "./slices/nominations";
 import voteCandidates from "./slices/voteCandidates";
 import awardCycles, { awardCycleApi } from "./slices/awardCycles";
+import { resultApi } from "./slices/results";
 import authSlice from "./slices/authSlice";
 
 //RTK QUERY
@@ -42,6 +43,7 @@ export const store = configureStore({
     [voteApi.reducerPath]: voteApi.reducer,
     [awardCycleApi.reducerPath]: awardCycleApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [resultApi.reducerPath]: resultApi.reducer,
     authSlice: authSlice,
   },
   middleware: (getDefaultMiddleware) =>
@@ -54,6 +56,7 @@ export const store = configureStore({
       voteApi.middleware,
       awardCycleApi.middleware,
       userApi.middleware,
+      resultApi.middleware,
     ]),
 });
 

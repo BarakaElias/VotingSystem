@@ -17,16 +17,16 @@ import { useNavigate } from "react-router-dom";
 
 const Votes = () => {
   const dispatch = useDispatch();
+  var rows = [];
   const navigate = useNavigate();
-  const { data, error, isLoading } = useGetAllVotesQuery();
+  const { data = [], error, isLoading } = useGetAllVotesQuery();
   if (!isLoading) {
     if (error === 401) {
       navigate("/admin/401");
     }
-    const rows = data;
+    rows = data;
   }
 
-  const rows = useSelector((state) => state.votes.votes);
   const columns = [
     {
       Header: "Category",

@@ -71,12 +71,15 @@ function AuthProvider({ children }) {
           setSession(accessToken);
           console.log("isvalid");
 
-          // const response = await axios.get(
-          //   "http://localhost/semaapi/public/api/auth/token_gets_user"
-          // );
+          const response = await axios.get(
+            "http://127.0.0.1:3001/users/get_user_from_token",
+            {
+              headers: { "Authorization ": `Bearer ${accessToken}` },
+            }
+          );
 
-          // console.log(response);
-          // console.log("token valid going to api");
+          console.log("User from token", response);
+          console.log("token valid going to api");
           // const { user } = response.data;
 
           // dispatch({

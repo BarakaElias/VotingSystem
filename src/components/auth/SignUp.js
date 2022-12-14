@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Alert, Button, Form, Row, Col } from "react-bootstrap";
-
+import NotyfContext from "./../../contexts/NotyfContext";
 import useAuth from "../../hooks/useAuth";
 import country_dial_codes from "../../utils/country_dial_codes";
 
@@ -14,6 +14,7 @@ function SignUp() {
   const [addUser] = useAddUserMutation();
   const navigate = useNavigate();
   const { signUp } = useAuth();
+  const notyf = useContext(NotyfContext);
 
   return (
     <Formik
@@ -38,6 +39,7 @@ function SignUp() {
         confirmPassword: Yup.string()
           .min(8, "Must be at least 8 characters")
           .max(255)
+          .oneOf([Yup.ref("password"), null], "Passwords must match")
           .required("Must confirm your password"),
         role: Yup.string().required("A usesr role type is required"),
       })}
@@ -45,12 +47,17 @@ function SignUp() {
         try {
           // signUp(values.name, values.password, values.email);
           console.log("Signup componenet", "Adding user");
-          addUser({
+          const new_user = await addUser({
             name: values.name,
             password: values.password,
             email: values.email,
             role: values.role,
           });
+          console.log("New user", new_user);
+          console.log("New user data", new_user.data);
+          if (new_user.data.id) {
+            notyf.success(`Successfully created user ${new_user.data.name}`);
+          }
 
           // navigate("/auth/sign-in");
         } catch (error) {
@@ -124,6 +131,25 @@ function SignUp() {
             {!!touched.password && (
               <Form.Control.Feedback type="invalid">
                 {errors.password}
+              </Form.Control.Feedback>
+            )}
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="confirmPassword"
+              placeholder="Password"
+              value={values.confirmPassword}
+              isInvalid={Boolean(
+                touched.confirmPassword && errors.confirmPassword
+              )}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            />
+            {!!touched.confirmPassword && (
+              <Form.Control.Feedback type="invalid">
+                {errors.confirmPassword}
               </Form.Control.Feedback>
             )}
           </Form.Group>

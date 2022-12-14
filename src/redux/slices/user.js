@@ -28,6 +28,7 @@ export const userApi = createApi({
         body: newUser,
       }),
       invalidatesTags: ["Users"],
+      transformResponse: (response, meta, arg) => response,
       transformErrorResponse: (response, meta, arg) => response.data,
     }),
     deleteUser: builder.mutation({

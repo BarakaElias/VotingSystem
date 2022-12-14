@@ -55,9 +55,11 @@ const AuthContext = createContext(null);
 function AuthProvider({ children }) {
   const authDispatch = useDispatch();
   const [state, dispatch] = useReducer(JWTReducer, initialState);
+  console.log("Authproivder first");
 
   //this one
   useEffect(() => {
+    console.log("useEffect inside");
     const initialize = async () => {
       console.log("initialzing from initialize");
       try {
@@ -80,15 +82,16 @@ function AuthProvider({ children }) {
 
           console.log("User from token", response);
           console.log("token valid going to api");
-          // const { user } = response.data;
+          const { user } = response.data;
+          console.log("JWT INITIALIZE USER: ", user);
 
-          // dispatch({
-          //   type: INITIALIZE,
-          //   payload: {
-          //     isAuthenticated: true,
-          //     user,
-          //   },
-          // });
+          dispatch({
+            type: INITIALIZE,
+            payload: {
+              isAuthenticated: true,
+              user: { ...user },
+            },
+          });
         } else if (userAccessToken) {
           console.log("JWTContext: Found voter token :", userAccessToken);
           console.log("JWTContext: Found userId: ", userId);

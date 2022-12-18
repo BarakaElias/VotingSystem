@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Card, Row, Container, Button, Col, Modal } from "react-bootstrap";
 import { Edit, Trash } from "react-feather";
 import { Helmet } from "react-helmet-async";
@@ -10,6 +10,7 @@ import {
 import ModalForm from "../../../ui/modals/ModalForm";
 import AwardCategoryForm from "./AwardCategoryForm";
 import { useSelector } from "react-redux";
+import NotyfContext from "../../../contexts/NotyfContext";
 
 //rtk query
 import {
@@ -21,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 let Yup = require("yup");
 
 const AwardCategories = () => {
+  const notyf = useContext(NotyfContext);
   const token = useSelector((state) => state.authSlice.token);
   console.log("token", token);
   const [deleteCategory] = useDeleteCategoryMutation();
@@ -38,6 +40,14 @@ const AwardCategories = () => {
     rows = data;
   }
   console.log("Categories rtk", data);
+  const handleClick = async (id) => {
+    const deletedCategory = await deleteCategory(id);
+    if (deletedCategory) {
+      notyf.success(`Deleted ${deleteCategory.title}`);
+    } else {
+      notyf.error("Could not delete");
+    }
+  };
   const columns = [
     {
       Header: "Title",
@@ -49,8 +59,9 @@ const AwardCategories = () => {
       maxWidth: 200,
     },
     {
-      Header: "Candidates",
-      accessor: "candidates",
+      Header: "Individual/Organization",
+      accessor: "cat_type",
+      Cell: ({ value }) => <p className="text-center">{value}</p>,
     },
     {
       Header: "Date Created",
@@ -64,7 +75,7 @@ const AwardCategories = () => {
           <div className="d-flex flex-row justify-content-between">
             {/* <Edit className="m-3" size="24" color="#293042" /> */}
             <Trash
-              onClick={(event) => deleteCategory(value)}
+              onClick={(event) => handleClick(value)}
               className="m-3"
               size="24"
               color="#d34d49"

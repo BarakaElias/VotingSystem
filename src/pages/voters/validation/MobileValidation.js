@@ -10,7 +10,7 @@ const MobileValidation = () => {
   const voter = location.state;
   console.log("Mobile Validation", voter);
   return (
-    <Container className="linear-grad-card">
+    <Container>
       <div className="text-center mt-4">
         <h2>Afya Awards</h2>
         <p className="lead">

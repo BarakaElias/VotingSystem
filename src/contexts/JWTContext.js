@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 import { setToken } from "../redux/slices/authSlice";
 import { setUserToken, setUserId } from "../redux/slices/voters";
 import { useDispatch } from "react-redux";
@@ -54,8 +54,37 @@ const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
   const authDispatch = useDispatch();
+  const [isReload, setIsReload] = useState(true);
   const [state, dispatch] = useReducer(JWTReducer, initialState);
   console.log("Authproivder first");
+  // const getUser = async (acc) => {
+  //   const response = await axios.get(
+  //     "http://127.0.0.1:3001/users/get_user_from_token",
+  //     {
+  //       headers: { "Authorization ": `Bearer ${acc}` },
+  //     }
+  //   );
+  //   console.log("Inside get user", response);
+  //   return response.data;
+  // };
+  // if (isReload) {
+  //   const us = getUser();
+  //   console.log("got user", us);
+  //   // const us = JSON.parse(window.localStorage.getItem("user"));
+  //   if (us) {
+  //     console.log(us);
+  //     dispatch({
+  //       type: INITIALIZE,
+  //       payload: {
+  //         isAuthenticated: true,
+  //         isInitialized: true,
+  //         user: { ...us },
+  //       },
+  //     });
+  //   }
+
+  //   setIsReload(false);
+  // }
 
   //this one
   useEffect(() => {
@@ -85,13 +114,13 @@ function AuthProvider({ children }) {
           const { user } = response.data;
           console.log("JWT INITIALIZE USER: ", user);
 
-          dispatch({
-            type: INITIALIZE,
-            payload: {
-              isAuthenticated: true,
-              user: { ...user },
-            },
-          });
+          // dispatch({
+          //   type: INITIALIZE,
+          //   payload: {
+          //     isAuthenticated: true,
+          //     user: { ...user },
+          //   },
+          // });
         } else if (userAccessToken) {
           console.log("JWTContext: Found voter token :", userAccessToken);
           console.log("JWTContext: Found userId: ", userId);
@@ -123,35 +152,6 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  // const signIn = async (email, password) => {
-  //   console.log("inside isgnin:", password + email);
-  //   // axios.defaults.withCredentials = true;
-
-  //   axios
-  //     .post("http://127.0.0.1/users/login", {
-  //       params: { email, password },
-  //     })
-  //     .then((response) => {
-  //       console.log("signin res:", response.data);
-  //       const { accessToken, user } = response.data;
-
-  //       setSession(accessToken);
-  //       dispatch({ type: SIGN_IN, payload: { user } });
-  //       return "1";
-  //     })
-  //     .catch((err) => {
-  //       console.log("signin error:", err);
-  //     });
-  // };
-
-  // const get_csrf = async () => {
-  //   axios.defaults.withCredentials = true;
-  //   const csrf = await axios
-  //     .get("http://localhost/semaapi/public/sanctum/csrf-cookie")
-  //     .then((res) => console.log(res))
-  //     .catch((e) => console.log(e));
-  // };
-
   //this one
   const signIn = async (email, password) => {
     axios.defaults.withCredentials = true;
@@ -164,7 +164,7 @@ function AuthProvider({ children }) {
       console.log("sign in", response);
       if (response.status === 200) {
         const { token, user } = response.data;
-        window.localStorage.setItem("user", user);
+        window.localStorage.setItem("user", JSON.stringify(user));
         setToken(token);
         setSession(token);
         dispatch({ type: SIGN_IN, payload: { user } });
@@ -184,41 +184,6 @@ function AuthProvider({ children }) {
     dispatch({ type: SIGN_OUT });
     dispatch(setToken(null));
   };
-
-  // const signUp = async (
-  //   email,
-  //   password,
-  //   first_name,
-  //   last_name,
-  //   phone_number
-  // ) => {
-  //   const response = await axios.post("register_new_client", {
-  //     email,
-  //     password,
-  //     first_name,
-  //     last_name,
-  //     phone_number,
-  //   });
-  //   console.log(response);
-  //   // const { accessToken, user } = response.data;
-
-  //   // window.localStorage.setItem("accessToken", accessToken);
-  //   // window.localStorage.setItem("user", user);
-  //   // dispatch({
-  //   //   type: SIGN_UP,
-  //   //   payload: {
-  //   //     user,
-  //   //   },
-  //   // });
-  // };
-
-  // const resetPassword = async (email) => {
-  //   const response = await axios.get(
-  //     "http://localhost/semaapi/public/api/reset_password_request",
-  //     { email }
-  //   );
-  //   console.log("Password reset: ", response);
-  // };
 
   return (
     <AuthContext.Provider

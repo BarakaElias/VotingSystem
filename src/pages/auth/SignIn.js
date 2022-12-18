@@ -30,7 +30,7 @@ const SignInPage = () => {
             </div>
             <SignIn />
           </div>
-          <Link to="/auth/sign-up">Create a free account</Link>
+          {/* <Link to="/auth/sign-up">Create a free account</Link> */}
         </Card.Body>
       </Card>
     </React.Fragment>

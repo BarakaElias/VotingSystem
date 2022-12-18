@@ -28,6 +28,11 @@ import Nomination from "./pages/admin/nominations/Nomination";
 import AwardCycles from "./pages/admin/awardCycle/AwardCycles";
 import CreateUser from "./pages/admin/users/CreateUser";
 import Users from "./pages/admin/users/Users";
+import IndividualNominations from "./pages/admin/nominations/individual/IndividualNominations";
+import IndividualNomination from "./pages/admin/nominations/individual/IndividualNomination";
+import OrganizationNominations from "./pages/admin/nominations/organization/OrganizationNominations";
+import OrganizationNomination from "./pages/admin/nominations/organization/OrganizationNomination";
+import Questions from "./pages/admin/nominations/questions/Questions";
 
 const routes = [
   {
@@ -76,7 +81,29 @@ const routes = [
       },
       {
         path: "nominations",
-        element: <Nominations />,
+        // element: <Nominations />,
+        children: [
+          {
+            path: "questions",
+            element: <Questions />,
+          },
+          {
+            path: "individual-nominations",
+            element: <IndividualNominations />,
+          },
+          {
+            path: "individual-nominations/:id",
+            element: <IndividualNomination />,
+          },
+          {
+            path: "organization-nominations",
+            element: <OrganizationNominations />,
+          },
+          {
+            path: "organization-nominations/:id",
+            element: <OrganizationNomination />,
+          },
+        ],
       },
       {
         path: "nominations/:id",

@@ -116,17 +116,17 @@ function SignIn() {
               </Form.Control.Feedback>
             )}
             <small>
-              <Link to="/auth/reset-password">Forgot password?</Link>
+              {/* <Link to="/auth/reset-password">Forgot password?</Link> */}
             </small>
           </Form.Group>
 
           <div>
-            <Form.Check
+            {/* <Form.Check
               type="checkbox"
               id="rememberMe"
               label="Remember me next time"
               defaultChecked
-            />
+            /> */}
           </div>
 
           <div className="text-center mt-3">

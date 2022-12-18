@@ -5,7 +5,7 @@ import axios from "axios";
 export const nominationApi = createApi({
   reducerPath: "nominationApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:3001",
+    baseUrl: "http://127.0.0.1:3001/nominations",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().authSlice.token;
       if (token) {
@@ -14,7 +14,12 @@ export const nominationApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Nominations"],
+  tagTypes: [
+    "Nominations",
+    "IndividualNominations",
+    "OrganizationNominations",
+    "Questions",
+  ],
   endpoints: (builder) => ({
     getAllNominations: builder.query({
       query: () => "nominations",
@@ -23,11 +28,79 @@ export const nominationApi = createApi({
     getNomination: builder.query({
       query: (id) => `/nominations/${id}`,
     }),
+    getIndividualNominations: builder.query({
+      query: () => "individual-nominations",
+      providesTags: ["IndividualNominations"],
+      transformErrorResponse: (response, meta, arg) => response.status,
+    }),
+    getOrganizationNominations: builder.query({
+      query: () => "organization-nominations",
+      providesTags: ["OrganizationNominations"],
+      transformErrorResponse: (response, meta, arg) => response.status,
+    }),
+    addIndividualNomination: builder.mutation({
+      query: (individualNomination) => ({
+        url: "individual-nomination",
+        method: "POST",
+        body: { params: { ...individualNomination } },
+      }),
+      invalidatesTags: ["IndividualNominations"],
+    }),
+    addOrganizationNomination: builder.mutation({
+      query: (organizationNomination) => ({
+        url: "organization-nomination",
+        method: "POST",
+        body: { params: { ...organizationNomination } },
+      }),
+      invalidatesTags: ["OrganizationNominations"],
+    }),
+    addNominationQuestion: builder.mutation({
+      query: (question) => ({
+        url: "nomination-question",
+        method: "POST",
+        body: { params: question },
+      }),
+      invalidatesTags: ["Questions"],
+    }),
+    getAllNominationQuestions: builder.query({
+      query: () => "nomination-questions",
+      transformErrorResponse: (res, meta, arg) => res.status,
+      providesTags: ["Questions"],
+    }),
+    getIndividualQuestions: builder.query({
+      query: () => "individual-questions",
+      transformErrorResponse: (response, meta, arg) => response.status,
+      providesTags: ["Questions"],
+    }),
+    getOrganizationQuestions: builder.query({
+      query: () => "organization-questions",
+      transformErrorResponse: (response, meta, arg) => response.status,
+      providesTags: ["Questions"],
+    }),
+    deleteNominationQuestion: builder.mutation({
+      query: (id) => ({
+        url: "nomination-question",
+        method: "DELETE",
+        body: { params: id },
+      }),
+      invalidatesTags: ["Questions"],
+    }),
   }),
 });
 
-export const { useGetAllNominationsQuery, useGetNominationQuery } =
-  nominationApi;
+export const {
+  useGetAllNominationsQuery,
+  useGetNominationQuery,
+  useGetIndividualNominationsQuery,
+  useGetOrganizationNominationsQuery,
+  useAddIndividualNominationMutation,
+  useAddOrganizationNominationMutation,
+  useAddNominationQuestionMutation,
+  useGetIndividualQuestionsQuery,
+  useGetOrganizationQuestionsQuery,
+  useGetAllNominationQuestionsQuery,
+  useDeleteNominationQuestionMutation,
+} = nominationApi;
 
 export const nominationsSlice = createSlice({
   name: "nominations",

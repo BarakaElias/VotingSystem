@@ -15,15 +15,26 @@ export const categoryApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Categories"],
+  tagTypes: ["Categories", "IndividualCategories", "OrganizationCategories"],
   endpoints: (builder) => ({
     getAllCategories: builder.query({
       query: () => "categories",
       transformErrorResponse: (response, meta, arg) => response.status,
+      providesTags: ["Categories"],
     }),
     getNumberOfCategories: builder.query({
       query: () => "categories/count",
       transformErrorResponse: (response, meta, arg) => response.status,
+    }),
+    getIndividualCategories: builder.query({
+      query: () => "categories/individual",
+      transformErrorResponse: (response, meta, arg) => response.status,
+      providesTags: ["IndividualCategories"],
+    }),
+    getOrganizationCategories: builder.query({
+      query: () => "categories/organization",
+      transformResponse: (response, meta, arg) => response.status,
+      providesTags: ["OrganizationCategories"],
     }),
     addCategory: builder.mutation({
       query: ({ ...category }) => ({
@@ -50,6 +61,8 @@ export const {
   useAddCategoryMutation,
   useDeleteCategoryMutation,
   useGetNumberOfCategoriesQuery,
+  useGetIndividualCategoriesQuery,
+  useGetOrganizationCategoriesQuery,
 } = categoryApi;
 
 export const awardCategoriesSlice = createSlice({

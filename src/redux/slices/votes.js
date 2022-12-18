@@ -21,9 +21,13 @@ export const voteApi = createApi({
       transformErrorResponse: (response, meta, arg) => response.status,
       invalidatesTags: ["Votes"],
     }),
+    getVotesCount: builder.query({
+      query: () => "votes/vote-count",
+      transformErrorResponse: (response, meta, arg) => response.status,
+    }),
   }),
 });
-export const { useGetAllVotesQuery } = voteApi;
+export const { useGetAllVotesQuery, useGetVotesCountQuery } = voteApi;
 
 export const votesSlice = createSlice({
   name: "votes",

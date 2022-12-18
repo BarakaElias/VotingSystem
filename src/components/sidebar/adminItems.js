@@ -43,6 +43,20 @@ const manageSection = [
     href: "/admin/nominations",
     icon: Clipboard,
     title: "Nominations",
+    children: [
+      {
+        href: "/admin/nominations/questions",
+        title: "Questions",
+      },
+      {
+        href: "/admin/nominations/individual-nominations",
+        title: "Individual Nominations",
+      },
+      {
+        href: "/admin/nominations/organization-nominations",
+        title: "Organization Nominations",
+      },
+    ],
   },
   {
     href: "/admin/candidates",
@@ -57,11 +71,11 @@ const manageSection = [
 ];
 
 const settingsSection = [
-  {
-    href: "/admin/ballot-positions",
-    icon: Archive,
-    title: "Ballot Positions",
-  },
+  // {
+  //   href: "/admin/ballot-positions",
+  //   icon: Archive,
+  //   title: "Ballot Positions",
+  // },
   {
     href: "/admin/users",
     icon: Users,

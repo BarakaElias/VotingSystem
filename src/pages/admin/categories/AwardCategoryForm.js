@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
@@ -6,10 +6,11 @@ import { Formik } from "formik";
 import { Alert, Button, Form } from "react-bootstrap";
 //rtk query
 import { useAddCategoryMutation } from "../../../redux/slices/awardCategories";
-
+import NotyfContext from "../../../contexts/NotyfContext";
 // import useAuth from "../../hooks/useAuth";
 
 const AwardCategoryForm = (props) => {
+  const notyf = useContext(NotyfContext);
   const [addCategory] = useAddCategoryMutation();
   const { closeModal } = props;
   return (
@@ -17,20 +18,28 @@ const AwardCategoryForm = (props) => {
       initialValues={{
         title: "",
         description: "",
+        cat_type: "",
         submit: false,
       }}
       validationSchema={Yup.object().shape({
         title: Yup.string().max(255).required("Title is required"),
         description: Yup.string().max(255),
+        cat_type: Yup.string().required(
+          "Select which criteria this category belongs"
+        ),
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           const result = await addCategory({
             title: values.title,
             description: values.description,
+            cat_type: values.cat_type,
           });
           if (result) {
+            notyf.success("Successfully created category");
             closeModal();
+          } else {
+            notyf.error("Could not create category");
           }
           console.log(result);
         } catch (error) {
@@ -107,6 +116,26 @@ const AwardCategoryForm = (props) => {
             {!!touched.description && (
               <Form.Control.Feedback type="invalid">
                 {errors.description}
+              </Form.Control.Feedback>
+            )}
+          </Form.Group>
+          <Form.Group className="mb-5">
+            <Form.Label>Select criteria</Form.Label>
+            <Form.Select
+              size="lg"
+              name="cat_type"
+              isInvalid={Boolean(touched.cat_type && errors.cat_type)}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            >
+              <option value="">--Select a category type--</option>
+              <option value="individual">Individual</option>
+              <option value="organization">Organization</option>
+              <option value="both">Both</option>
+            </Form.Select>
+            {!!touched.cat_type && (
+              <Form.Control.Feedback type="invalid">
+                {errors.cat_type}
               </Form.Control.Feedback>
             )}
           </Form.Group>

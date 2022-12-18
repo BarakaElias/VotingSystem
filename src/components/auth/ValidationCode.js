@@ -43,8 +43,6 @@ function ValidationCode(props) {
         params: voter,
       });
       return response;
-
-      console.log("Sending voter to db", response);
     } catch (err) {
       console.log("Sending voter to db", err);
     }
@@ -95,7 +93,9 @@ function ValidationCode(props) {
               navigate("/vote");
             } else if (res.status === 403 || res.status === 204) {
               console.log("You've already voted");
-              navigate("/thank-you");
+              navigate("/voted");
+              console.log("After navigation");
+              // navigate("/thank-you");
             } else {
               setErrors({
                 submit: "Error recording to database.Please try again",

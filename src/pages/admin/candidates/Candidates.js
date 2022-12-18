@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card, Row, Container, Col } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import FullTable from "../../../ui/tables/FullTable";
@@ -9,6 +9,7 @@ import {
 import { useSelector } from "react-redux";
 import { Trash, Eye } from "react-feather";
 import { useNavigate } from "react-router-dom";
+import NotyfContext from "../../../contexts/NotyfContext";
 
 //rtk query
 import {
@@ -17,6 +18,7 @@ import {
 } from "../../../redux/slices/candidates";
 
 const Candidates = () => {
+  const notyf = useContext(NotyfContext);
   const [deleteCandidate] = useDeleteCandidateMutation();
   const navigate = useNavigate();
   var rows = [];
@@ -28,8 +30,14 @@ const Candidates = () => {
     rows = data;
   }
   console.log("Candidates", data);
-  const handleClick = (id) => {
-    navigate(`/admin/candidates/${id}`);
+  const handleClick = async (id) => {
+    const deletedCandidate = await deleteCandidate(id);
+    if (deletedCandidate) {
+      notyf.success(`Deleted candidate: ${deletedCandidate.name}`);
+    } else {
+      notyf.error("Could not delete");
+    }
+    console.log("Candidate del: ", deletedCandidate);
   };
 
   const columns = [
@@ -82,7 +90,7 @@ const Candidates = () => {
             /> */}
             <Trash
               style={{ style: { cursor: "pointer" } }}
-              onClick={(event) => deleteCandidate(value)}
+              onClick={(event) => handleClick(value)}
               className="m-3"
               size="24"
               color="#d34d49"

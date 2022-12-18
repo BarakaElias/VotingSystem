@@ -9,12 +9,16 @@ import { store } from "./redux/store";
 import "react-app-polyfill/stable";
 import "react-app-polyfill/ie11";
 import LandingLayout from "./layouts/Landing";
-
+import GuestGuard from "./components/guards/GuestGuard";
 import Starting from "./pages/voters/starting/Starting";
 import MobileValidation from "./pages/voters/validation/MobileValidation";
 import VotingStage from "./pages/voters/votingstage/VotingStage";
 import ThankYou from "./pages/voters/thankyou/ThankYou";
 import ConfirmationPage from "./pages/voters/confirmation/ConfirmationPage";
+import Voted from "./pages/voters/voted/Voted";
+import IndividualNominationForm from "./pages/voters/nominations/individual/IndividualNominationForm";
+import OrganizationNominationForm from "./pages/voters/nominations/organization/OrganizationNominationForm";
+import NominationThankYou from "./pages/voters/nominations/NominationThankYou";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 console.log("Initializing here at index");
@@ -26,9 +30,40 @@ root.render(
           {/* <Route index element={<Welcome />} /> */}
           <Route path="starting" element={<Starting />} />
           <Route path="validate_code" element={<MobileValidation />} />
-          <Route path="vote" element={<VotingStage />} />
-          <Route path="confirm" element={<ConfirmationPage />} />
-          <Route path="thank-you" element={<ThankYou />} />
+          <Route
+            path="vote"
+            element={
+              <GuestGuard>
+                <VotingStage />
+              </GuestGuard>
+            }
+          />
+          <Route
+            path="confirm"
+            element={
+              <GuestGuard>
+                <ConfirmationPage />
+              </GuestGuard>
+            }
+          />
+          <Route
+            path="thank-you"
+            element={
+              <GuestGuard>
+                <ThankYou />
+              </GuestGuard>
+            }
+          />
+          <Route
+            path="individual-nomination-form"
+            element={<IndividualNominationForm />}
+          />
+          <Route
+            path="organization-nomination-form"
+            element={<OrganizationNominationForm />}
+          />
+          <Route path="thank-you-nomination" element={<NominationThankYou />} />
+          <Route path="voted" element={<Voted />} />
         </Route>
       </Routes>
       <App />

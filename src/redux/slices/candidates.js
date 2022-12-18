@@ -25,6 +25,15 @@ export const candidateApi = createApi({
       transformErrorResponse: (response, meta, arg) => response.status,
       providesTags: ["Candidates"],
     }),
+    addCandidate: builder.mutation({
+      query: (candidate) => ({
+        url: "candidates",
+        method: "POST",
+        body: { params: candidate },
+      }),
+      transformErrorResponse: (response, meta, arg) => response.data,
+      invalidatesTags: ["Candidates"],
+    }),
     deleteCandidate: builder.mutation({
       query: (tid) => ({
         url: `candidates/${tid}`,
@@ -47,6 +56,7 @@ export const {
   useGetAllCandidatesQuery,
   useGetCandidatesNumQuery,
   useDeleteCandidateMutation,
+  useAddCandidateMutation,
 } = candidateApi;
 
 export const candidatesSlice = createSlice({

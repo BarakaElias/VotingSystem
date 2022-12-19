@@ -2,11 +2,6 @@ import React, { useContext } from "react";
 import { Card, Row, Container, Col } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import FullTable from "../../../ui/tables/FullTable";
-import {
-  EmptyColumnFilter,
-  ColumnFilter,
-} from "../../../ui/tables/TableFilters";
-import { useSelector } from "react-redux";
 import { Trash, Eye } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import NotyfContext from "../../../contexts/NotyfContext";
@@ -22,7 +17,7 @@ const Candidates = () => {
   const [deleteCandidate] = useDeleteCandidateMutation();
   const navigate = useNavigate();
   var rows = [];
-  const { data, error, isLoading } = useGetAllCandidatesQuery();
+  const { data = [], error, isLoading } = useGetAllCandidatesQuery();
   if (error === 401) {
     navigate("/admin/401");
   }
@@ -74,6 +69,10 @@ const Candidates = () => {
       Header: "Email",
       accessor: "email",
       // Filter: ColumnFilter,
+    },
+    {
+      Header: "Added by",
+      accessor: "user",
     },
     {
       Header: "Action",

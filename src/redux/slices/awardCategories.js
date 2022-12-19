@@ -20,7 +20,11 @@ export const categoryApi = createApi({
     getAllCategories: builder.query({
       query: () => "categories",
       transformErrorResponse: (response, meta, arg) => response.status,
-      providesTags: ["Categories"],
+      providesTags: [
+        "Categories",
+        "IndividualCategories",
+        "OrganizationCategories",
+      ],
     }),
     getNumberOfCategories: builder.query({
       query: () => "categories/count",
@@ -51,6 +55,11 @@ export const categoryApi = createApi({
         method: "DELETE",
         body: { id: id },
       }),
+      invalidatesTags: [
+        "Categories",
+        "IndividualCategories",
+        "OrganizationCategories",
+      ],
     }),
   }),
 });

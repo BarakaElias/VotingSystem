@@ -1,6 +1,9 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-import { useGetOrganizationCategoriesQuery } from "../../../../redux/slices/awardCategories";
+import {
+  useGetOrganizationCategoriesQuery,
+  useGetIndividualCategoriesQuery,
+} from "../../../../redux/slices/awardCategories";
 const OrganizationNominationCategories = ({
   touched,
   handleChange,
@@ -24,11 +27,14 @@ const OrganizationNominationCategories = ({
           onChange={handleChange}
         >
           <option value="">--Select a category--</option>
-          {data.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.title}
-            </option>
-          ))}
+          {data.map((category) => {
+            console.log("Categories: ", category);
+            return (
+              <option key={category.id} value={category.id}>
+                {category.title}
+              </option>
+            );
+          })}
         </Form.Select>
         {!!touched.category && (
           <Form.Control.Feedback type="invalid">

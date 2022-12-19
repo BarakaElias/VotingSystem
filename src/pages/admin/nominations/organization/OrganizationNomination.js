@@ -13,16 +13,26 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAddCandidateMutation } from "../../../../redux/slices/candidates";
 import { useGetOrganizationNominationsQuery } from "../../../../redux/slices/nominations";
 import NotyfContext from "../../../../contexts/NotyfContext";
+import useAuth from "../../../../hooks/useAuth";
 
 const OrganizationNominations = () => {
+  const { user } = useAuth();
   const notyf = useContext(NotyfContext);
   const [addCandidate] = useAddCandidateMutation();
   const { id } = useParams();
   const navigate = useNavigate();
   const { organization } = useGetOrganizationNominationsQuery(undefined, {
-    selectFromResult: ({ data }) => ({
-      organization: data.find((nomination) => nomination.id === parseInt(id)),
-    }),
+    selectFromResult: ({ data }) => {
+      if (data) {
+        return {
+          organization: data.find(
+            (nomination) => nomination.id === parseInt(id)
+          ),
+        };
+      } else {
+        return navigate("/admin/nominations/organizations");
+      }
+    },
   });
   const candidate = {
     title: " ",
@@ -30,12 +40,15 @@ const OrganizationNominations = () => {
     company_name: organization.top_exec_name,
     phone_number: organization.top_exec_phone_number,
     email: organization.top_exec_email,
+    user: user.email,
     category_id: organization.Category.id,
   };
   const handleAddCandidate = async (cand) => {
     try {
       const response = await addCandidate(cand);
-      if (response) {
+      if (response.error) {
+        notyf.error(response.error.message);
+      } else if (response) {
         notyf.success(`Added ${organization.company_name} as a candidate`);
       }
     } catch (err) {

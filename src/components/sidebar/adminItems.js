@@ -16,11 +16,11 @@ const adminSection = [
     icon: Info,
     title: "Dashboard",
   },
-  {
-    href: "/admin/award-cycles",
-    icon: Award,
-    title: "Award Cycle",
-  },
+  // {
+  //   href: "/admin/award-cycles",
+  //   icon: Award,
+  //   title: "Award Cycle",
+  // },
 ];
 
 const manageSection = [
@@ -45,16 +45,16 @@ const manageSection = [
     title: "Nominations",
     children: [
       {
-        href: "/admin/nominations/questions",
-        title: "Questions",
-      },
-      {
         href: "/admin/nominations/individual-nominations",
-        title: "Individual Nominations",
+        title: "Individual",
       },
       {
         href: "/admin/nominations/organization-nominations",
-        title: "Organization Nominations",
+        title: "Organization",
+      },
+      {
+        href: "/admin/nominations/questions",
+        title: "Questions",
       },
     ],
   },

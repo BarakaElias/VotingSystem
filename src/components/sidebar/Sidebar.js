@@ -28,7 +28,7 @@ const Sidebar = ({ items, showFooter = true }) => {
           </a>
 
           <SidebarNav items={items} />
-          {!!showFooter && <SidebarFooter />}
+          {/* {!!showFooter && <SidebarFooter />} */}
         </PerfectScrollbar>
       </div>
     </nav>

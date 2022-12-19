@@ -93,7 +93,11 @@ const routes = [
           },
           {
             path: "individual-nominations/:id",
-            element: <IndividualNomination />,
+            element: (
+              <AdminGuard>
+                <IndividualNomination />
+              </AdminGuard>
+            ),
           },
           {
             path: "organization-nominations",
@@ -101,7 +105,11 @@ const routes = [
           },
           {
             path: "organization-nominations/:id",
-            element: <OrganizationNomination />,
+            element: (
+              <AdminGuard>
+                <OrganizationNomination />
+              </AdminGuard>
+            ),
           },
         ],
       },

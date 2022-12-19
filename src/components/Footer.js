@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Footer = () => (
   <footer className="footer">
@@ -33,7 +34,11 @@ const Footer = () => (
           <p className="mb-0">
             &copy; {new Date().getFullYear()} -{" "}
             <span href="/" className="text-muted">
-              Afya Awards Voting System by barakaelias.com | All Rights Reserved
+              Afya Awards Voting System by{" "}
+              <a href="https://aimfirms.com" target="_blank" rel="noreferrer">
+                Aimfirms.com
+              </a>{" "}
+              | All Rights Reserved
             </span>
           </p>
         </Col>

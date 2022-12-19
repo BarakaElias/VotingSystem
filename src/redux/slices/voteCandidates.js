@@ -6,7 +6,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const voteCandidateApi = createApi({
   reducerPath: "voteCandidateApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:3001/",
+    baseUrl: process.env.REACT_APP_API_URL,
   }),
   endpoints: (builder) => ({
     getAllVoteCandidates: builder.query({

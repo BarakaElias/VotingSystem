@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const voterApi = createApi({
   reducerPath: "voterApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:3001/",
+    baseUrl: process.env.REACT_APP_API_URL,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().authSlice.token;
       if (token) {

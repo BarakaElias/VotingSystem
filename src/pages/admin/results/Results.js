@@ -14,7 +14,7 @@ const Results = () => {
   // const { data } = useGetResultsQuery();
   // console.log("Resutls Page: loaded from server", data);
   useEffect(() => {
-    const ws = new WebSocket("ws://127.0.0.1:3001");
+    const ws = new WebSocket(process.env.REACT_APP_WS_URL);
     ws.addEventListener("message", (event) => {
       console.log("From server: ", JSON.parse(event.data));
       setData(JSON.parse(event.data));

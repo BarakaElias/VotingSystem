@@ -5,7 +5,7 @@ import axios from "axios";
 export const nominationApi = createApi({
   reducerPath: "nominationApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:3001/nominations",
+    baseUrl: `${process.env.REACT_APP_API_URL}nominations`,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().authSlice.token;
       if (token) {

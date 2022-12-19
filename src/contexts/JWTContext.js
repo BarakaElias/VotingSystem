@@ -103,7 +103,7 @@ function AuthProvider({ children }) {
           console.log("isvalid");
 
           const response = await axios.get(
-            "http://127.0.0.1:3001/users/get_user_from_token",
+            `${process.env.REACT_APP_API_URL}users/get_user_from_token`,
             {
               headers: { "Authorization ": `Bearer ${accessToken}` },
             }
@@ -157,9 +157,12 @@ function AuthProvider({ children }) {
     axios.defaults.withCredentials = true;
     try {
       console.log("JWT sign in: ", email + password);
-      const response = await axios.post("http://127.0.0.1:3001/users/login", {
-        params: { email, password },
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}users/login`,
+        {
+          params: { email, password },
+        }
+      );
 
       console.log("sign in", response);
       if (response.status === 200) {

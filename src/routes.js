@@ -33,6 +33,7 @@ import IndividualNomination from "./pages/admin/nominations/individual/Individua
 import OrganizationNominations from "./pages/admin/nominations/organization/OrganizationNominations";
 import OrganizationNomination from "./pages/admin/nominations/organization/OrganizationNomination";
 import Questions from "./pages/admin/nominations/questions/Questions";
+import HomePage from "./pages/HomePage";
 
 const routes = [
   {

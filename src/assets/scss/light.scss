@@ -76,3 +76,11 @@
 .linear-grad-card{
     background: linear-gradient(to bottom, #F1DCD7, #d1b9bd);
 }
+
+.clickable-card{
+    p, h2{
+        &:hover{
+            text-decoration: none;
+        }
+    }
+}

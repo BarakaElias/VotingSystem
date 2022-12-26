@@ -19,6 +19,7 @@ import Voted from "./pages/voters/voted/Voted";
 import IndividualNominationForm from "./pages/voters/nominations/individual/IndividualNominationForm";
 import OrganizationNominationForm from "./pages/voters/nominations/organization/OrganizationNominationForm";
 import NominationThankYou from "./pages/voters/nominations/NominationThankYou";
+import NominationsCategories from "./pages/voters/nominations/NominationsCategories";
 import HomePage from "./pages/HomePage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -61,6 +62,10 @@ root.render(
               <ThankYou />
             </GuestGuard>
           }
+        />
+        <Route
+          path="nomination-categories"
+          element={<NominationsCategories />}
         />
         <Route
           path="individual-nomination-form"

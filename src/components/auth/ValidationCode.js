@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import { Alert, Button, Form, Row, Col } from "react-bootstrap";
+import { RotateCw } from "react-feather";
+import { Alert, Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { setUserToken, setUserId, setVoter } from "../../redux/slices/voters";
 import axios from "axios";
@@ -11,14 +12,40 @@ import Countdown from "react-countdown";
 // import useAuth from "../../hooks/useAuth";
 
 function ValidationCode(props) {
+  const [pinId, setPinId] = useState("");
   const dispatch = useDispatch();
   const { voter } = props;
+  setPinId(voter.pinId);
+  const sendVerifyRequest = async (phone_number) => {
+    const res = await axios.post(
+      "https://api.sema.co.tz/api/Verify",
+      {
+        api_id: "API236492285",
+        api_password: "ForDemoClient123",
+        brand: "Afya Awards Voting",
+        sender_id: "Sema",
+        phonenumber: phone_number,
+      },
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      }
+    );
+    if (res.status === "S") {
+      const newPinId = res.verfication_id;
+      setPinId(newPinId);
+    }
+  };
   console.log("From code form", voter);
   const navigate = useNavigate();
 
   const Completionist = () => {
     return (
-      <h1 className="text-danger text-center">Verification code expired!</h1>
+      <Button
+        variant="link"
+        onClick={(event) => sendVerifyRequest(voter.phone_number)}
+      >
+        Try Again <RotateCw height={"12"} width={"12"} />
+      </Button>
     );
   };
   // Renderer callback with condition
@@ -39,9 +66,12 @@ function ValidationCode(props) {
   const sendVoterToBack = async (voter) => {
     console.log("Sending voter to db");
     try {
-      const response = await axios.post("http://127.0.0.1:3001/voters", {
-        params: voter,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}voters`,
+        {
+          params: voter,
+        }
+      );
       return response;
     } catch (err) {
       console.log("Sending voter to db", err);
@@ -60,25 +90,19 @@ function ValidationCode(props) {
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           console.log("Mobile Auth", "Validating");
+          console.log("Before sema otp call", pinId);
           //Verify the pin that was sent
           const response = await axios.post(
-            "https://apiotp.beem.africa/v1/verify",
+            "https://api.sema.co.tz/api/VerifyStatus",
             {
-              pinId: voter.pinId,
-              pin: values.code,
-            },
-            {
-              auth: {
-                username: "b1d2218977b5d109",
-                password:
-                  "OTFmMWViOGQ4MDQ2YmRhN2U3YzVlZDlmZmU0NjE3MTEwYWMxZWY5MjI1YWEzYmY5NTQ3ZGFlZjRmNDllMzE0Yg==",
-              },
+              verfication_id: pinId,
+              verfication_code: values.code,
             }
           );
           // const res = await sendVoterToBack(voter);
 
           console.log("Validation code: ", response);
-          if (response.status === 200) {
+          if (response.status === "V") {
             // const res = await sendVoterToBack(voter);
             const res = await sendVoterToBack(voter);
             console.log("Sending voter to back", res);

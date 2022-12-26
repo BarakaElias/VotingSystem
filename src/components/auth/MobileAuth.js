@@ -18,46 +18,52 @@ function MobileAuth() {
       initialValues={{
         username: "Baraka Urio",
         phone_number: "0624327900",
-        country_code: "93",
+        // country_code: "93",
         submit: false,
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string().max(255).required("Name is required"),
         phone_number: Yup.string()
-          .max(13)
-          .min(10)
+          .max(10, "Too long! Enter phonenumber as 062... and not +255")
+          .min(10, "Phonenumber is too short")
           .required("Phone number is required"),
-        country_code: Yup.string().max(4).required("Country code is required"),
+        // country_code: Yup.string().max(4).required("Country code is required"),
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          const phone =
-            values.phone_number.length === 10
-              ? values.country_code.slice(1) + values.phone_number.slice(1)
-              : values.country_code.slize(1) + values.phone_number;
+          const phone = `255${values.phone_number.slice(1)}`;
+          // values.phone_number.length === 10
+          //   ? values.country_code.slice(1) + values.phone_number.slice(1)
+          //   : values.country_code.slize(1) + values.phone_number;
           setVoter({ name: values.username, phone_number: phone });
           console.log("Mobile Auth sending msg to: ", phone);
           const response = await axios.post(
-            "https://apiotp.beem.africa/v1/request",
+            "https://api.sema.co.tz/api/Verify",
             {
-              appId: 206,
-              msisdn: phone,
+              api_id: "API236492285",
+              api_password: "ForDemoClient123",
+              brand: "Afya Awards Voting",
+              sender_id: "Sema",
+              phonenumber: phone,
             },
             {
-              auth: {
-                username: "b1d2218977b5d109",
-                password:
-                  "OTFmMWViOGQ4MDQ2YmRhN2U3YzVlZDlmZmU0NjE3MTEwYWMxZWY5MjI1YWEzYmY5NTQ3ZGFlZjRmNDllMzE0Yg==",
-              },
+              headers: { "Access-Control-Allow-Origin": "*" },
             }
+            // {
+            //   auth: {
+            //     username: "b1d2218977b5d109",
+            //     password:
+            //       "OTFmMWViOGQ4MDQ2YmRhN2U3YzVlZDlmZmU0NjE3MTEwYWMxZWY5MjI1YWEzYmY5NTQ3ZGFlZjRmNDllMzE0Yg==",
+            //   },
+            // }
           );
           console.log("Mobile Auth", response);
-          if (response.status === 200) {
+          if (response.status === "S") {
             navigate("/validate_code", {
               state: {
                 name: values.username,
                 phone_number: phone,
-                pinId: response.data.data.pinId,
+                pinId: response.verification,
               },
             });
           }
@@ -108,7 +114,7 @@ function MobileAuth() {
           </Form.Group>
 
           <Row>
-            <Col md={4}>
+            {/* <Col md={4}>
               <Form.Group>
                 <Form.Label>Country</Form.Label>
                 <Form.Select
@@ -124,27 +130,25 @@ function MobileAuth() {
                   ))}
                 </Form.Select>
               </Form.Group>
-            </Col>
-            <Col md={8}>
-              <Form.Group className="mb-3">
-                <Form.Label>Phone number</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="phone_number"
-                  placeholder="Eg. 0624xxxxxx"
-                  isInvalid={Boolean(
-                    touched.phone_number && errors.phone_number
-                  )}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                ></Form.Control>
-                {!!touched.phone_number && (
-                  <Form.Control.Feedback type="invalid">
-                    {errors.phone_number}
-                  </Form.Control.Feedback>
-                )}
-              </Form.Group>
-            </Col>
+            </Col> */}
+            {/* <Col md={8}> */}
+            <Form.Group className="mb-3">
+              <Form.Label>Phone number</Form.Label>
+              <Form.Control
+                type="text"
+                name="phone_number"
+                placeholder="Eg. 0624xxxxxx"
+                isInvalid={Boolean(touched.phone_number && errors.phone_number)}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              ></Form.Control>
+              {!!touched.phone_number && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.phone_number}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+            {/* </Col> */}
           </Row>
 
           <div></div>

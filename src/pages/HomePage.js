@@ -1,5 +1,4 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
 import { Container, Row, Col, Button, Badge } from "react-bootstrap";
 import {
   Sliders,
@@ -122,7 +121,7 @@ const Features = () => (
 const HomePage = () => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/admin");
+    navigate("/sign-in");
   };
   const handleVoterClick = () => {
     navigate("/starting");

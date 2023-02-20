@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GlobalFilter } from "./TableFilters";
+import Spinner from "react-bootstrap/Spinner";
 
 const FullTable = (props) => {
   const { values, cols } = props;
@@ -47,6 +48,7 @@ const FullTable = (props) => {
   );
   const { globalFilter } = state;
   const { pageIndex } = state;
+
   return (
     <React.Fragment>
       <Row>
@@ -84,22 +86,41 @@ const FullTable = (props) => {
             </tr>
           ))}
         </thead>
-        <tbody className="table-hover" {...getTableBodyProps()}>
-          {page.map((row) => {
-            prepareRow(row);
-            return (
-              <tr key={i + "rowtr"} {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td key={i + "td"} {...cell.getCellProps()}>
-                      {cell.render("Cell")}
-                    </td>
-                  );
-                })}
+        {data.length !== 0 ? (
+          <tbody className="table-hover" {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <tr key={i + "rowtr"} {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td key={i + "td"} {...cell.getCellProps()}>
+                        {cell.render("Cell")}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        ) : (
+          <React.Fragment>
+            <tbody>
+              <tr>
+                <td>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />{" "}
+                  Loading. Please wait
+                </td>
               </tr>
-            );
-          })}
-        </tbody>
+            </tbody>
+          </React.Fragment>
+        )}
       </Table>
       <Row>
         <Col md={8}></Col>

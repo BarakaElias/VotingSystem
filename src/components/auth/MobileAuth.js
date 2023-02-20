@@ -37,33 +37,28 @@ function MobileAuth() {
           //   : values.country_code.slize(1) + values.phone_number;
           setVoter({ name: values.username, phone_number: phone });
           console.log("Mobile Auth sending msg to: ", phone);
-          const response = await axios.post(
-            "https://api.sema.co.tz/api/Verify",
+          const params = {
+            api_id: "API236492285",
+            api_password: "ForDemoClient123",
+            brand: "Afya",
+            sender_id: "Sema",
+            phonenumber: phone,
+          };
+          const response = await axios.get(
+            `https://api.sema.co.tz/api/Verify?api_id=API236492285&api_password=ForDemoClient123&brand=Afya&sender_id=Sema&phonenumber=${phone}`,
             {
-              api_id: "API236492285",
-              api_password: "ForDemoClient123",
-              brand: "Afya Awards Voting",
-              sender_id: "Sema",
-              phonenumber: phone,
-            },
-            {
-              headers: { "Access-Control-Allow-Origin": "*" },
+              headers: {
+                "Access-Control-Allow-Origin": "http://localhost:3000",
+              },
             }
-            // {
-            //   auth: {
-            //     username: "b1d2218977b5d109",
-            //     password:
-            //       "OTFmMWViOGQ4MDQ2YmRhN2U3YzVlZDlmZmU0NjE3MTEwYWMxZWY5MjI1YWEzYmY5NTQ3ZGFlZjRmNDllMzE0Yg==",
-            //   },
-            // }
           );
           console.log("Mobile Auth", response);
-          if (response.status === "S") {
+          if (response.data.status === "S") {
             navigate("/validate_code", {
               state: {
                 name: values.username,
                 phone_number: phone,
-                pinId: response.verification,
+                pinId: response.data.verfication_id,
               },
             });
           }

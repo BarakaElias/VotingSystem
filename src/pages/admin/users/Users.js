@@ -69,7 +69,7 @@ const Users = () => {
 
   return (
     <React.Fragment>
-      <Helmet title="All Users" />
+      <Helmet title="Users" />
       <Container fluid className="p-0">
         <h1 className="h3 mb-3">All users</h1>
         <Card>

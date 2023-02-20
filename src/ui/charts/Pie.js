@@ -5,14 +5,14 @@ import { Card } from "react-bootstrap";
 
 import usePalette from "../../hooks/usePalette";
 
-const PieChart = () => {
+const PieChart = ({ theData }) => {
   const palette = usePalette();
 
   const data = {
-    labels: ["Social", "Search Engines", "Direct", "Other"],
+    labels: theData.labels,
     datasets: [
       {
-        data: [260, 125],
+        data: theData.data,
         backgroundColor: [palette.primary, "#E8EAED"],
         borderColor: "transparent",
       },
@@ -25,6 +25,15 @@ const PieChart = () => {
       display: false,
     },
   };
+
+  if (theData.data.lenth === 0) {
+    return (
+      <React.Fragment>
+        <h3>Votes</h3>
+        <h6 className="card-subtitle text-muted"> No data to display</h6>
+      </React.Fragment>
+    );
+  }
 
   return (
     <React.Fragment>

@@ -13,7 +13,7 @@ import { useGetIndividualNominationsQuery } from "../../../../redux/slices/nomin
 
 const IndividualNominations = () => {
   const navigate = useNavigate();
-  const { data, error, isLoading } = useGetIndividualNominationsQuery();
+  const { data = [], error, isLoading } = useGetIndividualNominationsQuery();
   var rows = [];
   if (error === 401) {
     navigate("/admin/401");
@@ -23,6 +23,7 @@ const IndividualNominations = () => {
     console.log("Individual Nominations: ", data);
   }
   const handleClick = (id) => {
+    console.log("Clicked on: ", id);
     navigate(`/admin/nominations/individual-nominations/${id}`);
   };
 
@@ -56,12 +57,22 @@ const IndividualNominations = () => {
     },
     {
       Header: "Category",
-      accessor: "Category",
-      Cell: ({ value }) => <h3>{value.title}</h3>,
+      accessor: "category",
+      Cell: ({ value }) => {
+        console.log("org category: ", value);
+        if (value !== null) {
+          return <h3>{value.title}</h3>;
+        }
+        return <h3>undefined</h3>;
+      },
     },
     {
       Header: "Status",
       accessor: "status",
+    },
+    {
+      Header: "Created",
+      accessor: "created_at",
     },
     {
       Header: "",
@@ -77,7 +88,12 @@ const IndividualNominations = () => {
               size="24"
               color="#293042"
             />
-            <Trash className="m-3" size="24" color="#d34d49" />
+            <Trash
+              className="m-3"
+              size="24"
+              style={{ cursor: "pointer" }}
+              color="#d34d49"
+            />
           </div>
         );
       },

@@ -6,14 +6,17 @@ export const nominationApi = createApi({
   reducerPath: "nominationApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_API_URL}nominations`,
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().authSlice.token;
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
+    mode: "cors",
+
+    // prepareHeaders: (headers, { getState }) => {
+    //   const token = getState().authSlice.token;
+    //   if (token) {
+    //     headers.set("Content-Type", `application-json`);
+    //   }
+    //   return headers;
+    // },
   }),
+
   tagTypes: [
     "Nominations",
     "IndividualNominations",
@@ -42,7 +45,7 @@ export const nominationApi = createApi({
       query: (individualNomination) => ({
         url: "individual-nomination",
         method: "POST",
-        body: { params: { ...individualNomination } },
+        body: JSON.stringify({ params: { ...individualNomination } }),
       }),
       invalidatesTags: ["IndividualNominations"],
     }),
@@ -50,7 +53,7 @@ export const nominationApi = createApi({
       query: (organizationNomination) => ({
         url: "organization-nomination",
         method: "POST",
-        body: { params: { ...organizationNomination } },
+        body: JSON.stringify({ params: { ...organizationNomination } }),
       }),
       invalidatesTags: ["OrganizationNominations"],
     }),
@@ -58,7 +61,7 @@ export const nominationApi = createApi({
       query: (question) => ({
         url: "nomination-question",
         method: "POST",
-        body: { params: question },
+        body: JSON.stringify({ params: question }),
       }),
       invalidatesTags: ["Questions"],
     }),
@@ -81,7 +84,7 @@ export const nominationApi = createApi({
       query: (id) => ({
         url: "nomination-question",
         method: "DELETE",
-        body: { params: id },
+        body: { id: id },
       }),
       invalidatesTags: ["Questions"],
     }),

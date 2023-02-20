@@ -7,16 +7,17 @@ export const candidateApi = createApi({
   reducerPath: "candidateApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_URL,
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().authSlice.token;
-
-      // const token =
-      //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJiYXJha2FAYWltZmlybXMuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjY5NDY5MjYyLCJleHAiOjE2Njk0NzI4NjJ9.1YpQMafOuo60gj0TxvMWSlrW6ZdizGESQXWtFGEAo0w";
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
+    // mode: "cors",
+    // credentials: "include",
+    // prepareHeaders: (headers, { getState }) => {
+    //   console.log("Candidates auth: ", getState());
+    //   const token = getState().authSlice.token;
+    //   if (token) {
+    //     headers.set("authorization", `Bearer ${token}`);
+    //   }
+    //   console.log("Candidate rtk: ", headers);
+    //   return headers;
+    // },
   }),
   tagTypes: ["Candidates"],
   endpoints: (builder) => ({
@@ -29,8 +30,23 @@ export const candidateApi = createApi({
       query: (candidate) => ({
         url: "candidates",
         method: "POST",
-        body: { params: candidate },
+        body: JSON.stringify({ params: candidate }),
       }),
+      transformErrorResponse: (response, meta, arg) => response.data,
+      invalidatesTags: ["Candidates"],
+    }),
+    addCandidateProfilePic: builder.mutation({
+      query: (values) => {
+        console.log("Inside nominations rtk: ", values);
+        return {
+          url: "candidates/profile_pic",
+          method: "POST",
+          body: JSON.stringify({
+            profile_pic: values.profile_pic,
+            candidate_id: values.candidate_id,
+          }),
+        };
+      },
       transformErrorResponse: (response, meta, arg) => response.data,
       invalidatesTags: ["Candidates"],
     }),
@@ -57,6 +73,7 @@ export const {
   useGetCandidatesNumQuery,
   useDeleteCandidateMutation,
   useAddCandidateMutation,
+  useAddCandidateProfilePicMutation,
 } = candidateApi;
 
 export const candidatesSlice = createSlice({

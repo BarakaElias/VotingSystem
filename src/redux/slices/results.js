@@ -1,10 +1,18 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import io from "socket.io-client";
+import Pusher from "pusher-js";
 
 export const resultApi = createApi({
   reducerPath: "resultApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/",
+    baseUrl: `${process.env.REACT_APP_API_URL}votes`,
+    // prepareHeaders: (headers, { getState }) => {
+    //   const token = getState().authSlice.token;
+    //   if (token) {
+    //     headers.set("authorization", `Bearer ${token}`);
+    //   }
+    //   return headers;
+    // },
   }),
   tagTypes: ["Results"],
   endpoints: (builder) => ({
@@ -14,29 +22,22 @@ export const resultApi = createApi({
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
-        //Create a websocket
-        const ws = new WebSocket("ws://127.0.0.1:3001/");
+        console.log("pusher here");
+        const pusher = new Pusher("baa1a0b2b190bf92b670", {
+          cluster: "eu",
+        });
+        const channel = pusher.subscribe("vote-result");
         try {
-          //wait for the initial query to resolve before proceeding
-          console.log("Inside rtk results subscription");
-          await cacheDataLoaded;
-          console.log("Awaited cached data");
+          // await cacheDataLoaded;
 
-          const listener = (event) => {
-            const data = JSON.parse(event.data);
-            console.log("Rtk sub from ws:", data);
-
+          channel.bind("vote-result", (data) => {
+            console.log("RTK: ", data);
             updateCachedData((draft) => {
               draft.push(data);
             });
-          };
-
-          ws.addEventListener("message", listener);
-          console.log("Passed the listener");
-        } catch (err) {
-          // no-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
-          // in which case `cacheDataLoaded` will throw
-          console.log("REsults rtk Error:", err);
+          });
+        } catch (e) {
+          console.log("RTK STREAMING: ", e);
         }
         await cacheEntryRemoved;
       },

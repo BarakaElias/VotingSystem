@@ -1,5 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Card, Row, Container, Button, Col, Modal } from "react-bootstrap";
+import {
+  Card,
+  Row,
+  Container,
+  Button,
+  Col,
+  Modal,
+  CloseButton,
+} from "react-bootstrap";
 import { Edit, Trash } from "react-feather";
 import { Helmet } from "react-helmet-async";
 import FullTable from "../../../ui/tables/FullTable";
@@ -11,6 +19,7 @@ import ModalForm from "../../../ui/modals/ModalForm";
 import AwardCategoryForm from "./AwardCategoryForm";
 import { useSelector } from "react-redux";
 import NotyfContext from "../../../contexts/NotyfContext";
+import Spinner from "react-bootstrap/Spinner";
 
 //rtk query
 import {
@@ -75,6 +84,7 @@ const AwardCategories = () => {
           <div className="d-flex flex-row justify-content-between">
             {/* <Edit className="m-3" size="24" color="#293042" /> */}
             <Trash
+              style={{ cursor: "pointer" }}
               onClick={(event) => handleClick(value)}
               className="m-3"
               size="24"
@@ -98,6 +108,7 @@ const AwardCategories = () => {
     <Modal show={true} size="xl" centered>
       <Modal.Header>
         <h1>Add an Award Category</h1>
+        <CloseButton onClick={closeModal} />
       </Modal.Header>
       <Modal.Body>
         <AwardCategoryForm closeModal={closeModal} />
@@ -112,7 +123,7 @@ const AwardCategories = () => {
   return (
     <React.Fragment>
       {form}
-      <Helmet title="Candidates" />
+      <Helmet title="Award Categories" />
       <Container fluid className="p-0">
         <Row>
           <Col md={11}>

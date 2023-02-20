@@ -15,16 +15,28 @@ export const voteCandidateApi = createApi({
     }),
     createVoteCandidate: builder.mutation({
       query: (cand) => ({
-        url: "award-cycles",
+        url: "vote-candidates",
         method: "POST",
-        body: cand,
+        body: JSON.stringify({ params: cand }),
+      }),
+      invalidatesTags: ["Candidates"],
+    }),
+    deleteVoteCandidate: builder.mutation({
+      query: (id) => ({
+        url: "vote-candidates",
+        method: "DELETE",
+        body: { id: id },
       }),
       invalidatesTags: ["Candidates"],
     }),
   }),
 });
 
-export const { useGetAllVoteCandidatesQuery } = voteCandidateApi;
+export const {
+  useGetAllVoteCandidatesQuery,
+  useCreateVoteCandidateMutation,
+  useDeleteVoteCandidateMutation,
+} = voteCandidateApi;
 
 export const voteCandidatesSlice = createSlice({
   name: "voteCandidates",

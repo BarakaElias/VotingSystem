@@ -1,5 +1,13 @@
 import React, { useContext, useState } from "react";
-import { Card, Row, Container, Col, Modal, Button } from "react-bootstrap";
+import {
+  Card,
+  Row,
+  Container,
+  Col,
+  Modal,
+  Button,
+  CloseButton,
+} from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import FullTable from "../../../../ui/tables/FullTable";
 // import {
@@ -32,7 +40,8 @@ const Questions = () => {
   let form = isOpen ? (
     <Modal show={true} size="xl" centered>
       <Modal.Header>
-        <h1>Add an Award Category</h1>
+        <h1>Add a Nomination Question</h1>
+        <CloseButton onClick={closeModal} />
       </Modal.Header>
       <Modal.Body>
         <QuestionForm closeModal={closeModal} />
@@ -59,7 +68,7 @@ const Questions = () => {
       },
       {
         Header: "Created",
-        accessor: "createdAt",
+        accessor: "created_at",
       },
       {
         Header: "",
@@ -73,7 +82,7 @@ const Questions = () => {
                 className="m-3"
                 style={{ cursor: "pointer" }}
                 size="24"
-                color="#293042"
+                color="#d34d49"
               />
             </div>
           );
@@ -83,7 +92,7 @@ const Questions = () => {
     return (
       <React.Fragment>
         {form}
-        <Helmet title="Individual Nominations" />
+        <Helmet title="Questions" />
         <Container fluid className="p-0">
           <h1 className="h3 mb-3">Questions</h1>
           <h4>These questions will appear in the nomination form</h4>

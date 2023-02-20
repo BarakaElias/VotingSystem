@@ -60,11 +60,11 @@ const ConfirmationPage = () => {
     console.log("posting vote", vote);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:3001/votes",
+        `${process.env.REACT_APP_API_URL}votes`,
+        null,
         {
           params: { voterId: voterId, votes: votes },
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       );
       console.log("Submitting votes confiration", response);
     } catch (err) {

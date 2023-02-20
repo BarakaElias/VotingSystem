@@ -42,7 +42,7 @@ const IndividualNominations = () => {
     phone_number: individual.nominee_phone_number,
     email: individual.nominee_email,
     user: user.email,
-    category_id: individual.Category.id,
+    category_id: individual.category.id,
   };
   const handleAddCandidate = async (cand) => {
     try {
@@ -61,7 +61,7 @@ const IndividualNominations = () => {
   console.log("Individual component", individual);
   return (
     <React.Fragment>
-      <Helmet title="Individual Nominations" />
+      <Helmet title="Individual Nomination" />
       <Container fluid className="p-0">
         {/* <h1 className="mb-3">Individual Nominations</h1> */}
         <Card>
@@ -69,18 +69,31 @@ const IndividualNominations = () => {
             <div className="d-flex flex-row justify-content-between">
               <div>
                 <h1>{`Name: ${individual.nominee_title} ${individual.nominee_name}`}</h1>
-                <h3>{`Category: ${individual.Category.title}`}</h3>
+                <h3>{`Category: ${individual.category.title}`}</h3>
               </div>
-              <div>
-                <Button
-                  variant="success"
-                  size="lg"
-                  onClick={(event) => handleAddCandidate(candidate)}
-                >
-                  <Check />
-                  Add as a Candidate
-                </Button>
-              </div>
+              {individual.status ? (
+                <div>
+                  <Button
+                    disabled
+                    variant="success"
+                    size="lg"
+                    onClick={(event) => handleAddCandidate(candidate)}
+                  >
+                    Already a candidate
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    variant="outline-secondary"
+                    size="lg"
+                    onClick={(event) => handleAddCandidate(candidate)}
+                  >
+                    <Check />
+                    Add as a Candidate
+                  </Button>
+                </div>
+              )}
             </div>
 
             <hr></hr>
@@ -99,7 +112,7 @@ const IndividualNominations = () => {
               <Col>
                 <h2 className="mb-3">Survey</h2>
                 <ol className="list-group list-group-flush">
-                  {individual.Answers.map((answer) => (
+                  {individual.answers.map((answer) => (
                     <li key={answer.id} className="list-group-item">
                       <div>
                         <h4>{answer.title}</h4>

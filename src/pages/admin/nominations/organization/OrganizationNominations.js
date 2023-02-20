@@ -56,12 +56,22 @@ const OrganizationNominations = () => {
     },
     {
       Header: "Category",
-      accessor: "Category",
-      Cell: ({ value }) => <h3>{value.title}</h3>,
+      accessor: "category",
+      Cell: ({ value }) => {
+        console.log("org category: ", value);
+        if (value !== null) {
+          return <h3>{value.title}</h3>;
+        }
+        return <h3>undefined</h3>;
+      },
     },
     {
       Header: "Status",
       accessor: "status",
+    },
+    {
+      Header: "Created",
+      accessor: "created_at",
     },
     {
       Header: "",

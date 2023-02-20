@@ -43,7 +43,7 @@ const Votes = () => {
   ];
   return (
     <React.Fragment>
-      <Helmet title="Candidates" />
+      <Helmet title="Votes" />
       <Container fluid className="p-0">
         <h1 className="h3 mb-3">Votes</h1>
         <Card>

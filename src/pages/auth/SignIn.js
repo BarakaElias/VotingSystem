@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { Card } from "react-bootstrap";
 
 import SignIn from "../../components/auth/SignIn";
-import avatar from "../../assets/img/avatars/avatar.jpg";
+import avatar from "../../assets/img/logo.png";
 import { Link } from "react-router-dom";
 
 const SignInPage = () => {
@@ -22,8 +22,8 @@ const SignInPage = () => {
             <div className="text-center">
               <img
                 src={avatar}
-                alt="Chris Wood"
-                className="img-fluid rounded-circle"
+                alt="Afya Awards logo"
+                className="img-fluid"
                 width="132"
                 height="132"
               />

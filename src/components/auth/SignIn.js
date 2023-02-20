@@ -5,9 +5,11 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { Alert, Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
+import Spinner from "react-bootstrap/Spinner";
 import { setToken } from "../../redux/slices/authSlice";
 
 import useAuth from "./../../hooks/useAuth";
+import axios from "axios";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -41,7 +43,7 @@ function SignIn() {
             setErrors({ submit: "Incorrect Email or Password" });
             setSubmitting(false);
           } else {
-            dispatch(setToken(user.token));
+            // dispatch(setToken(user.token));
             console.log("SignIn dispatched token", user.token);
 
             navigate("/admin/dashboard");
@@ -136,6 +138,15 @@ function SignIn() {
               size="lg"
               disabled={isSubmitting}
             >
+              {isSubmitting ? (
+                <Spinner
+                  as="span"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : null}
               Sign in
             </Button>
           </div>

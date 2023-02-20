@@ -34,6 +34,7 @@ const OrganizationNominations = () => {
       }
     },
   });
+  console.log("Single org: ", organization);
   const candidate = {
     title: " ",
     name: organization.company_name,
@@ -41,7 +42,7 @@ const OrganizationNominations = () => {
     phone_number: organization.top_exec_phone_number,
     email: organization.top_exec_email,
     user: user.email,
-    category_id: organization.Category.id,
+    category_id: organization.category.id,
   };
   const handleAddCandidate = async (cand) => {
     try {
@@ -57,7 +58,7 @@ const OrganizationNominations = () => {
   };
   return (
     <React.Fragment>
-      <Helmet title="Organization Nominations" />
+      <Helmet title="Organization Nomination" />
       <Container fluid className="p-0">
         <h1 className="h3 mb-3">Organization Nominations</h1>
         <Card>
@@ -66,18 +67,30 @@ const OrganizationNominations = () => {
               <div>
                 <h1>{`Company name:${organization.company_name}`}</h1>
                 <p>{`Address: ${organization.company_address}`}</p>
-                <h3>{`Category: ${organization.Category.title}`}</h3>
+                <h3>{`Category: ${organization.category.title}`}</h3>
               </div>
-              <div>
-                <Button
-                  onClick={(event) => handleAddCandidate(candidate)}
-                  variant="success"
-                  size="lg"
-                >
-                  <Check />
-                  Add as a Candidate
-                </Button>
-              </div>
+              {organization.status ? (
+                <div>
+                  <Button
+                    onClick={(event) => handleAddCandidate(candidate)}
+                    variant="outline-secondary"
+                    size="lg"
+                  >
+                    Already a Candidate
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    onClick={(event) => handleAddCandidate(candidate)}
+                    variant="success"
+                    size="lg"
+                  >
+                    <Check />
+                    Add as a Candidate
+                  </Button>
+                </div>
+              )}
             </div>
 
             <hr></hr>
@@ -101,7 +114,7 @@ const OrganizationNominations = () => {
               <Col>
                 <h2 className="mb-3">Survey</h2>
                 <ol className="list-group list-group-flush">
-                  {organization.Answers.map((answer) => (
+                  {organization.answers.map((answer) => (
                     <li key={answer.id} className="list-group-item">
                       <div>
                         <h4>{answer.title}</h4>

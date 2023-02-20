@@ -3,7 +3,7 @@ import { Card, Row, Container, Col } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import FullTable from "../../../ui/tables/FullTable";
 import { Trash, Eye } from "react-feather";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NotyfContext from "../../../contexts/NotyfContext";
 
 //rtk query
@@ -24,7 +24,6 @@ const Candidates = () => {
   if (!isLoading) {
     rows = data;
   }
-  console.log("Candidates", data);
   const handleClick = async (id) => {
     const deletedCandidate = await deleteCandidate(id);
     if (deletedCandidate) {
@@ -32,7 +31,6 @@ const Candidates = () => {
     } else {
       notyf.error("Could not delete");
     }
-    console.log("Candidate del: ", deletedCandidate);
   };
 
   const columns = [
@@ -48,6 +46,12 @@ const Candidates = () => {
     {
       Header: "Award nominated",
       accessor: "category",
+      Cell: ({ value }) => {
+        if (value) {
+          return <p>{value.title}</p>;
+        }
+        return <p className="text-danger">Unidentified category</p>;
+      },
       // Filter: ColumnFilter,
     },
     {
@@ -78,17 +82,14 @@ const Candidates = () => {
       Header: "Action",
       accessor: "id",
       Cell: ({ value }) => {
-        console.log("Candidate action: ", value);
         return (
           <div className="d-flex flex-row justify-content-between">
-            {/* <Eye
-              onClick={(event) => handleClick(row.original.id)}
-              className="m-3"
-              size="24"
-              color="#293042"
-            /> */}
+            <Link to={`${value}`}>
+              <Eye className="m-3" size="24" color="#293042" />
+            </Link>
+
             <Trash
-              style={{ style: { cursor: "pointer" } }}
+              style={{ cursor: "pointer" }}
               onClick={(event) => handleClick(value)}
               className="m-3"
               size="24"

@@ -4,15 +4,15 @@ import axios from "axios";
 export const categoryApi = createApi({
   reducerPath: "categoryApi",
   baseQuery: fetchBaseQuery({
+    // mode: "cors",
     baseUrl: process.env.REACT_APP_API_URL,
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().authSlice.token;
-      console.log("api slice", token);
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
+    // prepareHeaders: (headers, { getState }) => {
+    //   const token = getState().authSlice.token;
+    //   if (token) {
+    //     headers.set("authorization", `Bearer ${token}`);
+    //   }
+    //   return headers;
+    // },
   }),
   tagTypes: ["Categories", "IndividualCategories", "OrganizationCategories"],
   endpoints: (builder) => ({
@@ -43,7 +43,9 @@ export const categoryApi = createApi({
       query: ({ ...category }) => ({
         url: "/categories",
         method: "POST",
-        body: category,
+        body: JSON.stringify({
+          params: category,
+        }),
       }),
       invalidatesTags: ["Categories"],
       transformErrorResponse: (response, meta, org) => response.status,

@@ -6,7 +6,7 @@ import useSidebar from "../../hooks/useSidebar";
 import SidebarFooter from "./SidebarFooter";
 import SidebarNav from "./SidebarNav";
 // import { ReactComponent as Logo } from "../../assets/img/logo.svg";
-import logo from "../../assets/img/sema-icon.png";
+import logo from "../../assets/img/logo.png";
 // import logo from "../../../public/sema-icon.png";
 
 const Sidebar = ({ items, showFooter = true }) => {
@@ -17,9 +17,9 @@ const Sidebar = ({ items, showFooter = true }) => {
       <div className="sidebar-content">
         <PerfectScrollbar>
           <a className="sidebar-brand" href="/">
-            {/* <Logo /> <span className="align-middle me-3">Bulk SMS</span> */}
+            {/* <Logo /> <span className="align-middle me-3">Afya Awards</span> */}
             <div className="d-flex justify-content-space-around">
-              {/* <img src={logo} alt="Logo" /> */}
+              {/* <img src={logo} alt="Afya Awards logo" /> */}
               <span className="align-right me-3">
                 Afya Awards Voting System
               </span>

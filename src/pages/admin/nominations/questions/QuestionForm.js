@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Formik } from "formik";
-import { Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Row, Col, Form, Button, Alert, CloseButton } from "react-bootstrap";
 import * as Yup from "yup";
 import { useAddNominationQuestionMutation } from "../../../../redux/slices/nominations";
 import NotyfContext from "../../../../contexts/NotyfContext";
@@ -92,17 +92,14 @@ const QuestionForm = ({ closeModal }) => {
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          <div className="d-flex flex-row text-center mt-3">
+          <div className="d-flex flex-row justify-content-end text-center mt-3">
             <Button
               type="submit"
               variant="primary"
               size="lg"
               disabled={isSubmitting}
             >
-              Add Category
-            </Button>
-            <Button onClick={closeModal} variant="danger" size="lg">
-              Close
+              Add Question
             </Button>
           </div>
         </Form>

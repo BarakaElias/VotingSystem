@@ -30,6 +30,7 @@ const AwardCategoryForm = (props) => {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
+          console.log("New category: ", values);
           const result = await addCategory({
             title: values.title,
             description: values.description,
@@ -140,7 +141,7 @@ const AwardCategoryForm = (props) => {
             )}
           </Form.Group>
 
-          <div className="d-flex flex-row text-center mt-3">
+          <div className="d-flex flex-row justify-content-end text-center mt-3">
             <Button
               type="submit"
               variant="primary"
@@ -148,9 +149,6 @@ const AwardCategoryForm = (props) => {
               disabled={isSubmitting}
             >
               Add Category
-            </Button>
-            <Button onClick={closeModal} variant="danger" size="lg">
-              Close
             </Button>
           </div>
         </Form>

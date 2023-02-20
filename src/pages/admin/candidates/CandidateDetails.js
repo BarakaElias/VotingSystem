@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, Card, Row, Col } from "react-bootstrap";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import PieChart from "../../../ui/charts/Pie";
+import axios from "axios";
 
 // import avatar1 from "../../assets/img/avatars/avatar.jpg";
 // import avatar2 from "../../assets/img/avatars/avatar-2.jpg";
@@ -16,6 +17,35 @@ import PieChart from "../../../ui/charts/Pie";
 
 const CandidateDetails = (props) => {
   const { candidate } = props;
+  console.log("Candidate detail: ", candidate);
+  const [pieData, setPieData] = useState({
+    label: [],
+    data: [],
+  });
+
+  useEffect(() => {
+    async function getPieData() {
+      try {
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}candidates/votes`,
+          null,
+          {
+            params: {
+              candidate: candidate.name,
+              category: candidate.category_id,
+            },
+          }
+        );
+        console.log("Fetched pie data: ", response);
+        if (response.status === 200) {
+          setPieData(response.data);
+        }
+      } catch (e) {
+        console.log("Pie data error: ", e);
+      }
+    }
+    getPieData();
+  });
 
   return (
     <Card>
@@ -28,14 +58,14 @@ const CandidateDetails = (props) => {
         <Row>
           <Col md={4}>
             <FontAwesomeIcon icon={faHeart} size={64} />
-            <h2 className="text-center">{candidate.category}</h2>
+            <h2 className="text-center">{candidate.category.title}</h2>
           </Col>
           <Col></Col>
           <Col md={4} className="text-center">
-            <PieChart />
+            <PieChart theData={pieData} />
           </Col>
         </Row>
-        <div className="m-5">
+        {/* <div className="m-5">
           <Row>
             <h3 className="p-2">
               What makes this individual stand out when compared to his or her
@@ -75,7 +105,7 @@ const CandidateDetails = (props) => {
             </p>
             <hr></hr>
           </Row>
-        </div>
+        </div> */}
       </Card.Body>
     </Card>
   );

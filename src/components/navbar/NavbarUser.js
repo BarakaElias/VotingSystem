@@ -1,22 +1,24 @@
 import React from "react";
-
 import { Dropdown } from "react-bootstrap";
-
 import { Settings, Lock, Key } from "react-feather";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-
+import useAppSelector from "../../hooks/useAppSelector";
 import avatar1 from "../../assets/img/avatars/avatar.jpg";
 import { logUserOut } from "../../redux/slices/user";
+import useAuth from "../../hooks/useAuth";
 
 const NavbarUser = () => {
+  var user = useAppSelector((state) => state.authSlice.user);
+  console.log("Navbar user: ", user);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useAuth();
+  const { signOut } = useAuth();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(logUserOut());
+    await signOut();
     navigate("/sign-in");
   };
   // const user = useSelector((state: RootStateOrAny) => //state.user.value);
@@ -29,11 +31,7 @@ const NavbarUser = () => {
       </span>
       <span className="d-none d-sm-inline-block">
         <Dropdown.Toggle as="a" className="nav-link">
-          <img
-            src={avatar1}
-            className="avatar img-fluid rounded-circle me-1"
-            alt="Chris Wood"
-          />
+          <img src={avatar1} className="avatar img-fluid rounded-circle me-1" />
           <span className="text-dark">{user ? user.name : "No user"}</span>
         </Dropdown.Toggle>
       </span>

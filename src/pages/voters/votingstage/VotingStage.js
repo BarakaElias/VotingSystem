@@ -21,9 +21,6 @@ const VotingStage = () => {
     console.log("Data voting stage", data);
   }
   const navigate = useNavigate();
-  const voteCandidates = useSelector(
-    (state) => state.voteCandidates.voteCandidates
-  );
 
   return (
     // <section className="landing-intro landing-bg pt-5 pt-lg-6 pb-5 pb-lg-7">

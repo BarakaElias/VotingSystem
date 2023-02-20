@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
@@ -20,6 +20,7 @@ import IndividualNominationForm from "./pages/voters/nominations/individual/Indi
 import OrganizationNominationForm from "./pages/voters/nominations/organization/OrganizationNominationForm";
 import NominationThankYou from "./pages/voters/nominations/NominationThankYou";
 import NominationsCategories from "./pages/voters/nominations/NominationsCategories";
+import Categories from "./pages/voters/categories/Categories";
 import HomePage from "./pages/HomePage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -55,6 +56,7 @@ root.render(
             </GuestGuard>
           }
         />
+        <Route path="categories" element={<Categories />} />
         <Route
           path="thank-you"
           element={

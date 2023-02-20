@@ -9,9 +9,10 @@ import { useParams } from "react-router-dom";
 
 const Candidate = (props) => {
   const { id } = useParams();
+  console.log(id);
   const { candidate } = useGetAllCandidatesQuery(undefined, {
     selectFromResult: ({ data }) => ({
-      candidate: data.find((cand) => cand.id === id),
+      candidate: data.find((cand) => cand.id == id),
     }),
   });
 
@@ -26,7 +27,7 @@ const Candidate = (props) => {
 
   return (
     <React.Fragment>
-      <Helmet title="Candidates" />
+      <Helmet title="Candidate" />
       <Container fluid className="p-0">
         <h1 className="h3 mb-3">Candidate</h1>
         <Row>

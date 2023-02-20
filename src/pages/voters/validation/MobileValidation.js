@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Row, Container, Col } from "react-bootstrap";
 import MobileAuth from "../../../components/auth/MobileAuth";
-import avatar from "../../../assets/img/avatars/avatar.jpg";
+import avatar from "../../../assets/img/logo.png";
 import { useSelector } from "react-redux";
 import ValidationCode from "../../../components/auth/ValidationCode";
 import { useLocation } from "react-router-dom";
@@ -25,7 +25,7 @@ const MobileValidation = () => {
               <img
                 src={avatar}
                 alt="Chris Wood"
-                className="img-fluid rounded-circle"
+                className="img-fluid"
                 width="132"
                 height="132"
               />

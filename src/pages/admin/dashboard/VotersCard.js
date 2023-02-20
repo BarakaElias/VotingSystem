@@ -10,7 +10,7 @@ const VotersCard = () => {
   useEffect(() => {
     const get_vote_count = async () => {
       const vote_count = await axios.get(
-        "http://127.0.0.1:3001/votes/vote-count"
+        `${process.env.REACT_APP_API_URL}votes/vote-count`
       );
       console.log("Vote count: ", vote_count);
       votes_num = vote_count["data"];

@@ -34,6 +34,7 @@ import OrganizationNominations from "./pages/admin/nominations/organization/Orga
 import OrganizationNomination from "./pages/admin/nominations/organization/OrganizationNomination";
 import Questions from "./pages/admin/nominations/questions/Questions";
 import HomePage from "./pages/HomePage";
+import Page404 from "./pages/Page404";
 
 const routes = [
   {
@@ -95,9 +96,9 @@ const routes = [
           {
             path: "individual-nominations/:id",
             element: (
-              <AdminGuard>
-                <IndividualNomination />
-              </AdminGuard>
+              // <AdminGuard>
+              <IndividualNomination />
+              // </AdminGuard>
             ),
           },
           {
@@ -107,9 +108,9 @@ const routes = [
           {
             path: "organization-nominations/:id",
             element: (
-              <AdminGuard>
-                <OrganizationNomination />
-              </AdminGuard>
+              // <AdminGuard>
+              <OrganizationNomination />
+              // </AdminGuard>
             ),
           },
         ],

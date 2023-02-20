@@ -6,13 +6,13 @@ export const awardCycleApi = createApi({
   reducerPath: "awardCycleApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_URL,
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().authSlice.token;
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
+    // prepareHeaders: (headers, { getState }) => {
+    //   const token = getState().authSlice.token;
+    //   if (token) {
+    //     headers.set("authorization", `Bearer ${token}`);
+    //   }
+    //   return headers;
+    // },
   }),
   tagTypes: ["AwardCycles"],
   endpoints: (builder) => ({
@@ -25,7 +25,7 @@ export const awardCycleApi = createApi({
       query: (award_cycle) => ({
         url: "award-cycles",
         method: "POST",
-        body: award_cycle,
+        body: JSON.stringify({ params: award_cycle }),
       }),
       invalidatesTags: ["AwardCycles"],
     }),
@@ -33,7 +33,7 @@ export const awardCycleApi = createApi({
       query: (award_cycle) => ({
         url: "award-cycles",
         method: "UPDATE",
-        body: award_cycle,
+        body: JSON.stringify({ params: award_cycle }),
       }),
       invalidatesTags: ["AwardCycles"],
     }),

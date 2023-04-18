@@ -6,6 +6,7 @@ import {
   setAdminToken,
   setInititalizing,
 } from "../redux/slices/authSlice";
+import { useLoginUserMutation } from "../redux/slices/user";
 import { Spinner } from "react-bootstrap";
 // import axios from "../utils/axios";
 import axios from "axios";
@@ -58,6 +59,7 @@ const JWTReducer = (state, action) => {
 const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
+  const [loginUser] = useLoginUserMutation();
   const [isLoading, setLoading] = useState(true);
   const [state, dispatch] = useReducer(JWTReducer, initialState);
   const authDispatch = useAppDispatch();
@@ -73,13 +75,17 @@ function AuthProvider({ children }) {
         console.log("Afya token cookie: ", token);
 
         //reach out to api to see if the token is still valid
-        const validityCheck = await axios.get(
-          `${process.env.REACT_APP_API_URL}user`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-          null
-        );
+        // const validityCheck = await axios.get(
+        //   `https://api.afya-awards.tz/user`,
+        //   {
+        //     withCredentials: true,
+        //     // headers: { Accept: "application/json" },
+        //   }
+        // );
+        const validityCheck = await fetch("https://api.afya-awards.tz/user", {
+          mode: "cors",
+          credentials: "include",
+        });
 
         console.log("Resonse from validity check: ", validityCheck);
 
@@ -142,50 +148,43 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  const get_csrf = async () => {
-    // axios.defaults.withCredentials = true;
-    const csrf = await axios
-      .get("https://apis.sema.co.tz/sanctum/csrf-cookie")
-      .then((res) => console.log(res))
-      .catch((e) => console.log(e));
-  };
-
   const signIn = async (email, password) => {
     // axios.defaults.withCredentials = true;
     try {
       console.log("JWT sign in: ", email + password);
       //first getting csrf token
-      const csrf_token = await axios.get(
+      const csrf_token = await fetch(
         `https://api.afya-awards.tz/sanctum/csrf-cookie`
       );
-      console.log("CSRF TOKEN", csrf_token);
+      console.log(csrf_token);
 
       //singing in
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}users/login`,
-        null,
-        {
-          params: { email: email, password: password },
-        }
-      );
+      // const response = await axios.post(
+      //   `https://api.afya-awards.tz/users/login`,
+      //   null,
+      //   {
+      //     body: JSON.stringify({ email: email, password: password }),
+      //   }
+      // );
+      const response = await loginUser({ email: email, password: password });
 
       console.log("sign in", response);
-      if (response.status === 200) {
-        const { token, user } = response.data;
+      if (response.data.user !== undefined) {
+        const { user } = response.data;
         window.localStorage.setItem("user", JSON.stringify(user));
-        window.localStorage.setItem("afya_token", token);
-        console.log("JWT: ", token);
-        authDispatch(setAdminToken(token));
+        // window.localStorage.setItem("afya_token", token);
+        // console.log("JWT: ", token);
+        // authDispatch(setAdminToken(token));
         authDispatch(setAdmin(user));
-        authDispatch(setToken(token));
-        setSession(token);
+        // authDispatch(setToken(token));
+        // setSession(token);
         dispatch({ type: SIGN_IN, payload: { user } });
         return user;
       } else {
         console.log("res wasnt 200");
       }
     } catch (e) {
-      console.log("sign in:", e.response);
+      console.log("sign in:", e);
       return e.response;
     }
   };

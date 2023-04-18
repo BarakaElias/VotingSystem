@@ -7,8 +7,8 @@ export const candidateApi = createApi({
   reducerPath: "candidateApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_URL,
-    // mode: "cors",
-    // credentials: "include",
+    mode: "cors",
+    credentials: "include",
     // prepareHeaders: (headers, { getState }) => {
     //   console.log("Candidates auth: ", getState());
     //   const token = getState().authSlice.token;
@@ -38,13 +38,17 @@ export const candidateApi = createApi({
     addCandidateProfilePic: builder.mutation({
       query: (values) => {
         console.log("Inside nominations rtk: ", values);
+        console.log("Inside rtk: ", values);
+        const fd = new FormData();
+        fd.append("profile_pic", values.profile_pic);
+        fd.append("candidate_id", values.candidate_id);
         return {
           url: "candidates/profile_pic",
           method: "POST",
-          body: JSON.stringify({
-            profile_pic: values.profile_pic,
-            candidate_id: values.candidate_id,
-          }),
+          body: fd,
+          // headers: {
+          //   "Content-Type": "multipart/form-data",
+          // },
         };
       },
       transformErrorResponse: (response, meta, arg) => response.data,

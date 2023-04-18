@@ -156,3 +156,13 @@
         }
     }
 }
+
+.MyDropzone {
+    border: 2px dashed #ccc;
+    padding: 20px;
+  }
+  
+  .MyDropzoneActive {
+    border: 2px dashed #000;
+    background-color: #eee;
+  }

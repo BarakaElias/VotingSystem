@@ -22,6 +22,15 @@ import NominationThankYou from "./pages/voters/nominations/NominationThankYou";
 import NominationsCategories from "./pages/voters/nominations/NominationsCategories";
 import Categories from "./pages/voters/categories/Categories";
 import HomePage from "./pages/HomePage";
+import axios from "axios";
+axios.interceptors.request.use((request) => {
+  // axios.defaults.headers["access-control-allow-origin"] =
+  //   "http://localhost:3000";
+  axios.defaults.withCredentials = true;
+  console.log(request);
+
+  return request;
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 console.log("Initializing here at index");

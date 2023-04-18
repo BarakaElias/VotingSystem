@@ -11,7 +11,7 @@ const axiosInstance = axios.create();
 //   return request;
 // });
 
-axios.defaults.baseURL = "http://localhost/semaapi/public/api/";
+// axios.defaults.baseURL = "http://localhost/semaapi/public/api/";
 
 axiosInstance.interceptors.response.use(
   (response) => response,

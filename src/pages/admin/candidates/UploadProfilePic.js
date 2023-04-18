@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, yupToFormErrors } from "formik";
 import { Spinner, Form, Alert, Button } from "react-bootstrap";
 import * as Yup from "yup";
 import { useAddCandidateProfilePicMutation } from "../../../redux/slices/candidates";
 import axios from "axios";
+import Dropzone from "react-dropzone";
 
 const UploadProfilePic = ({ candidateId }) => {
   const [addCandidateProfilePic] = useAddCandidateProfilePicMutation();
   console.log("Uploading for: ", candidateId);
+  const [fileDropped, setFileDropped] = useState(false);
+
   return (
     <Formik
       initialValues={{
@@ -20,7 +23,7 @@ const UploadProfilePic = ({ candidateId }) => {
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           setSubmitting(true);
-          console.log(values);
+          console.log("Form values: ", values);
           const response = await addCandidateProfilePic(values);
 
           if (response.status === 200) {
@@ -65,6 +68,18 @@ const UploadProfilePic = ({ candidateId }) => {
             </React.Fragment>
           );
         }
+
+        const handleFileSelected = (files) => {
+          if (files[0].type === "image/jpeg") {
+            setFieldValue("profile_pic", files[0]);
+            setFileDropped(true);
+          } else {
+            alert("Only jpef files");
+          }
+        };
+
+        console.log("Profile pic: ", values.profile_pic);
+
         return (
           <Form onSubmit={handleSubmit}>
             {errors.submit && (
@@ -72,18 +87,22 @@ const UploadProfilePic = ({ candidateId }) => {
                 <div className="alert-message">{errors.submit}</div>
               </Alert>
             )}
-            <Form.Group className="mb-3">
-              <Form.Label>Select an image</Form.Label>
-              <Form.Control
-                name="profile_pic"
-                onChange={(event) => {
-                  setFieldValue("profile_pic", event.currentTarget.files[0]);
-                }}
-                type="file"
-              />
-            </Form.Group>
+            <Dropzone onDrop={handleFileSelected} accept="image/jpeg">
+              {({ getRootProps, getInputProps }) => (
+                <div {...getRootProps()} className="bg-light p-4 ">
+                  <input {...getInputProps()} />
+                  {fileDropped ? (
+                    <p>{values.profile_pic.path}</p>
+                  ) : (
+                    <p className="text-center">
+                      Drag and drop a photo here, or click to select a file
+                    </p>
+                  )}
+                </div>
+              )}
+            </Dropzone>
             <div className="d-flex flex-row justify-content-center">
-              <Button type="submit" variant="primary">
+              <Button type="submit" className="mt-4" variant="primary">
                 Upload
               </Button>
             </div>

@@ -168,7 +168,7 @@ const Categories = () => {
                       onClick={() => handleSelection(category)}
                       className="voting-categories m-2"
                     >
-                      <Row className="gx-0">
+                      <Row className="gx-0 h-100">
                         <Col md={3} className=" p-1 bg-categories">
                           <CategoryType cat_type={category.cat_type} />
                         </Col>

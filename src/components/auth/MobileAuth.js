@@ -44,13 +44,19 @@ function MobileAuth() {
             sender_id: "Sema",
             phonenumber: phone,
           };
-          const response = await axios.get(
-            `https://api.sema.co.tz/api/Verify?api_id=API236492285&api_password=ForDemoClient123&brand=Afya&sender_id=Sema&phonenumber=${phone}`,
-            {
-              headers: {
-                "Access-Control-Allow-Origin": "http://localhost:3000",
-              },
-            }
+          // const response = await axios.get(
+          //   `https://api.sema.co.tz/api/Verify`,
+          //   null,
+          //   {
+          //     api_id: "API236492285",
+          //     api_password: "ForDemoClient123",
+          //     brand: "Afya",
+          //     sender_id: "Sema",
+          //     phonenumber: phone,
+          //   }
+          // );
+          const response = await fetch(
+            `https://api.sema.co.tz/api/Verify?api_id=API236492285&api_password=ForDemoClient123&brand=Afya&sender_id=Sema&phonenumber=${phone}`
           );
           console.log("Mobile Auth", response);
           if (response.data.status === "S") {

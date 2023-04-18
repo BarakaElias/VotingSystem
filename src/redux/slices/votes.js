@@ -6,6 +6,8 @@ export const voteApi = createApi({
   reducerPath: "voteApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_URL,
+    mode: "cors",
+    credentials: "include",
     // prepareHeaders: (headers, { getState }) => {
     //   const token = getState().authSlice.token;
     //   if (token) {

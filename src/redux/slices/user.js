@@ -6,6 +6,8 @@ export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_URL,
+    mode: "cors",
+    credentials: "include",
     // prepareHeaders: (headers, { getState }) => {
     //   const token = getState().authSlice.token;
     //   if (token) {
@@ -30,6 +32,20 @@ export const userApi = createApi({
       transformResponse: (response, meta, arg) => response,
       transformErrorResponse: (response, meta, arg) => response.data,
     }),
+    loginUser: builder.mutation({
+      query: (user) => ({
+        url: "users/login",
+        method: "POST",
+        body: JSON.stringify({
+          params: user,
+        }),
+      }),
+      transformErrorResponse: (response, meta, arg) => response.data,
+    }),
+    checkUser: builder.query({
+      query: () => "user",
+      transformResponse: (response, meta, arg) => response.data,
+    }),
     deleteUser: builder.mutation({
       query: (id) => ({
         url: "users",
@@ -43,7 +59,9 @@ export const userApi = createApi({
 
 export const {
   useGetAllUsersQuery,
+  useCheckUserQuery,
   useDeleteUserMutation,
+  useLoginUserMutation,
   useAddUserMutation,
 } = userApi;
 

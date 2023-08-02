@@ -22,6 +22,7 @@ export const userApi = createApi({
       query: () => "users",
       transformErrorResponse: (response, meta, arg) => response.status,
     }),
+
     addUser: builder.mutation({
       query: (newUser) => ({
         url: "users",
@@ -36,6 +37,11 @@ export const userApi = createApi({
       query: (user) => ({
         url: "users/login",
         method: "POST",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           params: user,
         }),

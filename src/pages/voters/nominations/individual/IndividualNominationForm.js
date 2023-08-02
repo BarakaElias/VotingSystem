@@ -14,18 +14,32 @@ const IndividualNominationForm = ({ route, navigation }) => {
   const navigate = useNavigate();
 
   console.log("Category id: ", cat_id);
+  let cr = [];
+  if (cat_id.criteria !== null) {
+    cr = JSON.parse(cat_id.criteria);
+  }
+  console.log("The criterias", cr);
   return (
     <React.Fragment>
       <Row className="form-layout">
         <Col sm={12} md={5} className="form-hero">
           <h1 className="text-center m-6">Individual Nomination Form</h1>
-          <img
+          {/* <img
             src={AwardPlaque}
             alt="Afya Award Plaque"
             className="img-fluid"
-          />
+          /> */}
           <h3 className="text-center">{cat_id.title}</h3>
-          <p className="p-5 text-monospace fs-3">{cat_id.description}</p>
+          <p className="px-5 text-monospace fs-3">{cat_id.description}</p>
+          <h4>Nomination Criteria:-</h4>
+
+          <ol>
+            {cr.map((c) => (
+              <li className="fs-4" key={c}>
+                {c}
+              </li>
+            ))}
+          </ol>
         </Col>
         <Col sm={12} md={7} className="form-content p-3">
           <Formik
@@ -82,7 +96,30 @@ const IndividualNominationForm = ({ route, navigation }) => {
             ) => {
               console.log("Individual Nomination Form: ", values);
               try {
-                const response = await addIndividualNomination(values);
+                console.log("PLAIN VALUES", values);
+                const fd = new FormData();
+                fd.append("nominee_first_name", values.nominator_first_name);
+                fd.append("nominee_last_name", values.nominator_last_name);
+                fd.append("nominee_company", values.nominee_company);
+                fd.append("nominee_title", values.nominee_title);
+                fd.append(
+                  "nominee_company_address",
+                  values.nominee_company_address
+                );
+                fd.append("category", values.category);
+                fd.append("nominee_phone_number", values.nominee_phone_number);
+                fd.append("nominee_email", values.nominee_email);
+                fd.append("nominator_first_name", values.nominator_first_name);
+                fd.append("nominator_last_name", values.nominator_last_name);
+                fd.append(
+                  "nominator_phone_number",
+                  values.nominator_phone_number
+                );
+                //loop through answers object
+
+                fd.append("answers", JSON.stringify(values.answers));
+                console.log("FORM DATA VALUES", fd);
+                const response = await addIndividualNomination(fd);
                 console.log("individual nom post", response);
                 if (response.data.id) {
                   navigate("/thank-you-nomination");

@@ -70,6 +70,10 @@ function AuthProvider({ children }) {
     const initialize = async () => {
       console.log("initialzing from initialize");
       try {
+        const csrf_token = await fetch(
+          `https://api.afya-awards.tz/sanctum/csrf-cookie`
+        );
+        console.log("Csrftoken ", csrf_token);
         //get token from local storage
         const token = window.localStorage.getItem("afya_token");
         console.log("Afya token cookie: ", token);
@@ -82,10 +86,14 @@ function AuthProvider({ children }) {
         //     // headers: { Accept: "application/json" },
         //   }
         // );
-        const validityCheck = await fetch("https://api.afya-awards.tz/user", {
-          mode: "cors",
-          credentials: "include",
-        });
+        const validityCheck = await fetch(
+          "https://api.afya-awards.tz/api/user",
+          null,
+          {
+            mode: "cors",
+            credentials: "include",
+          }
+        );
 
         console.log("Resonse from validity check: ", validityCheck);
 
@@ -153,23 +161,11 @@ function AuthProvider({ children }) {
     try {
       console.log("JWT sign in: ", email + password);
       //first getting csrf token
-      const csrf_token = await fetch(
-        `https://api.afya-awards.tz/sanctum/csrf-cookie`
-      );
-      console.log(csrf_token);
 
-      //singing in
-      // const response = await axios.post(
-      //   `https://api.afya-awards.tz/users/login`,
-      //   null,
-      //   {
-      //     body: JSON.stringify({ email: email, password: password }),
-      //   }
-      // );
       const response = await loginUser({ email: email, password: password });
 
       console.log("sign in", response);
-      if (response.data.user !== undefined) {
+      if (response.data !== undefined && response.data.user !== undefined) {
         const { user } = response.data;
         window.localStorage.setItem("user", JSON.stringify(user));
         // window.localStorage.setItem("afya_token", token);

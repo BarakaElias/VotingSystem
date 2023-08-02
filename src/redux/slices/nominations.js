@@ -7,14 +7,7 @@ export const nominationApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_API_URL}nominations`,
     mode: "cors",
-
-    // prepareHeaders: (headers, { getState }) => {
-    //   const token = getState().authSlice.token;
-    //   if (token) {
-    //     headers.set("Content-Type", `application-json`);
-    //   }
-    //   return headers;
-    // },
+    credentials: "include",
   }),
 
   tagTypes: [
@@ -45,7 +38,7 @@ export const nominationApi = createApi({
       query: (individualNomination) => ({
         url: "individual-nomination",
         method: "POST",
-        body: JSON.stringify({ params: { ...individualNomination } }),
+        body: individualNomination,
       }),
       invalidatesTags: ["IndividualNominations"],
     }),

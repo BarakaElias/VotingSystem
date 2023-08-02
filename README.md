@@ -1,8 +1,23 @@
-# Getting Started with Create React App
+# Voting System for A Health Award
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a web-based application built using React.js, designed to facilitate secure voting processes for various award cycles. The system includes features such as OTP verification through SMS, a nomination form for candidates, voting forms, and an administration dashboard for managing the entire process efficiently.
 
-## Available Scripts
+## Features
+**OTP with SMS:**
+The voting system incorporates a robust OTP verification process using SMS. When users register or vote, they receive a one-time password on their registered mobile number, ensuring secure access and preventing duplicate or unauthorized voting.
+
+**Nomination Form**
+The platform allows participants to nominate candidates for various award categories. Nominees' details are collected through a user-friendly nomination form, ensuring a seamless nomination process.
+
+**Award Cycles**
+The system supports multiple award cycles, enabling administrators to set up and manage distinct voting rounds for different events or time periods.
+
+**Voting Form**
+Registered users can cast their votes using the intuitive voting form. The application ensures that users can vote only once for each award category, providing a fair and transparent voting process.
+
+**Administration Dashboard**
+The administration dashboard serves as the central hub for managing the voting system. Administrators can monitor and control the nomination process, view real-time voting statistics, and manage award cycles efficiently.
+
 
 In the project directory, you can run:
 

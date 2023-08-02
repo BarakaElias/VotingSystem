@@ -13,18 +13,28 @@ const OrganizationNominationForm = () => {
   const location = useLocation();
   const { cat_id } = location.state;
   console.log("Category id: ", cat_id);
+  let cr = [];
+  if (cat_id.criteria !== null) {
+    cr = JSON.parse(cat_id.criteria);
+  }
   return (
     <React.Fragment>
       <Row className="form-layout">
         <Col sm={12} md={5} className="form-hero">
           <h1 className="text-center m-6">Organization Nomination Form</h1>
-          <img
+          {/* <img
             src={AwardPlaque}
             alt="Afya Award Plaque"
             className="img-fluid"
-          />
+          /> */}
           <h3 className="text-center">{cat_id.title}</h3>
           <p className="p-5 text-monospace fs-3">{cat_id.description}</p>
+          <h4>Nomination Criteria</h4>
+          <ol>
+            {cr.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ol>
         </Col>
         <Col sm={12} md={7} className="form-content p-3">
           <Formik
@@ -75,7 +85,21 @@ const OrganizationNominationForm = () => {
               values,
               { setErrors, setStatus, setSubmitting }
             ) => {
-              console.log("Organization Nomination Form: ", values);
+              const fd = new FormData();
+              fd.append("name_of_company", values.name_of_company);
+              fd.append("top_exec_title", values.top_exec_title);
+              fd.append("top_exec_first_name", values.top_exec_first_name);
+              fd.append("top_exec_last_name", values.top_exec_last_name);
+              fd.append("company_address", values.company_address);
+              fd.append("category", values.category);
+              fd.append("answers", JSON.stringify(values.answers));
+              fd.append("nominator_first_name", values.nominator_first_name);
+              fd.append("nominator_last_name", values.nominator_last_name);
+              fd.append(
+                "nominator_phone_number",
+                values.nominator_phone_number
+              );
+              console.log("Organization Nomination Form: ", fd);
               try {
                 const response = await addOrganizationNomination(values);
                 console.log("Orgnanization Nom post", response);

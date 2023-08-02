@@ -17,8 +17,7 @@ function MobileAuth() {
     <Formik
       initialValues={{
         username: "Baraka Urio",
-        phone_number: "0624327900",
-        // country_code: "93",
+        phone_number: "",
         submit: false,
       }}
       validationSchema={Yup.object().shape({
@@ -27,14 +26,11 @@ function MobileAuth() {
           .max(10, "Too long! Enter phonenumber as 062... and not +255")
           .min(10, "Phonenumber is too short")
           .required("Phone number is required"),
-        // country_code: Yup.string().max(4).required("Country code is required"),
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           const phone = `255${values.phone_number.slice(1)}`;
-          // values.phone_number.length === 10
-          //   ? values.country_code.slice(1) + values.phone_number.slice(1)
-          //   : values.country_code.slize(1) + values.phone_number;
+
           setVoter({ name: values.username, phone_number: phone });
           console.log("Mobile Auth sending msg to: ", phone);
           const params = {
@@ -44,22 +40,20 @@ function MobileAuth() {
             sender_id: "Sema",
             phonenumber: phone,
           };
-          // const response = await axios.get(
-          //   `https://api.sema.co.tz/api/Verify`,
-          //   null,
-          //   {
-          //     api_id: "API236492285",
-          //     api_password: "ForDemoClient123",
-          //     brand: "Afya",
-          //     sender_id: "Sema",
-          //     phonenumber: phone,
-          //   }
-          // );
-          const response = await fetch(
-            `https://api.sema.co.tz/api/Verify?api_id=API236492285&api_password=ForDemoClient123&brand=Afya&sender_id=Sema&phonenumber=${phone}`
-          );
+
+          const parameters = {
+            api_id: "",
+            api_password: "",
+            brand: "Afya",
+            sender_id: "Sema",
+            phonenumber: phone,
+          };
+
+          const url = `https://api.sema.co.tz/api/Verify`;
+
+          const response = axios.post(url, null, parameters);
           console.log("Mobile Auth", response);
-          if (response.data.status === "S") {
+          if (response.status === 200) {
             navigate("/validate_code", {
               state: {
                 name: values.username,
@@ -115,30 +109,13 @@ function MobileAuth() {
           </Form.Group>
 
           <Row>
-            {/* <Col md={4}>
-              <Form.Group>
-                <Form.Label>Country</Form.Label>
-                <Form.Select
-                  name="country_code"
-                  value={values.country_code}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                >
-                  {country_dial_codes.map((option) => (
-                    <option key={option.code} value={option.dial_code}>
-                      {option.name} {option.dial_code}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col> */}
-            {/* <Col md={8}> */}
             <Form.Group className="mb-3">
               <Form.Label>Phone number</Form.Label>
               <Form.Control
                 type="text"
                 name="phone_number"
                 placeholder="Eg. 0624xxxxxx"
+                value={values.phone_number}
                 isInvalid={Boolean(touched.phone_number && errors.phone_number)}
                 onBlur={handleBlur}
                 onChange={handleChange}

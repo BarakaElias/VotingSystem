@@ -75,21 +75,16 @@ const ValidationCode = (props) => {
           const response = await axios.get(
             `https://api.sema.co.tz/api/VerifyStatus?verfication_id=${voter.pinId}&verfication_code=${values.code}`
           );
-          // const res = await sendVoterToBack(voter);
 
           console.log("Validation code: ", response);
           if (response.data.status === "V") {
-            // const res = await sendVoterToBack(voter);
             const res = await sendVoterToBack(voter);
             console.log("Sending voter to back", res);
 
             if (res.status === 200) {
               console.log("After recording to database", res);
-              // dispatch(setUserToken(res.data.token));
               dispatch(setUserId(res.data.voter.id));
-              // dispatch(setVoter(res.data.voter));
-              // window.localStorage.setItem("userAccessToken", res.data.token);
-              // window.localStorage.setItem("userId", res.data.voter.id);
+
               navigate("/vote");
             } else if (res.status === 403 || res.status === 204) {
               console.log("You've already voted");

@@ -23,7 +23,9 @@ const FullTable = (props) => {
   let i = 0;
 
   const data = React.useMemo(() => values, [values]);
+
   const columns = React.useMemo(() => cols, []);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -48,7 +50,13 @@ const FullTable = (props) => {
   );
   const { globalFilter } = state;
   const { pageIndex } = state;
-
+  if (data === undefined) {
+    return (
+      <React.Fragment>
+        <h1>Data is not defined</h1>
+      </React.Fragment>
+    );
+  }
   return (
     <React.Fragment>
       <Row>

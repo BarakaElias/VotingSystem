@@ -115,7 +115,8 @@
 
 
     .form-hero{
-        background-image: linear-gradient(#223671, #51488b);
+        // background-color: #f4f4f4;
+        background-color: $primary;
         height: 100vh;
     position: fixed;
     @media(max-width: 600px){
@@ -130,14 +131,19 @@
             margin-right: auto;
         }
 
-        p, h1, h3{
-            color: #fff;
+        p, h1, h3, h4, ol{
+            color: #c0c0c0;
             
             p{
                 width: 90%;
                 justify-content: center;
                 display: block;
                 margin: 0 auto;
+            }
+            li{
+                margin: 0 auto;
+                width: 90%;
+                padding: 0.6em 0;
             }
         }
 

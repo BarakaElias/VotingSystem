@@ -35,6 +35,7 @@ import OrganizationNomination from "./pages/admin/nominations/organization/Organ
 import Questions from "./pages/admin/nominations/questions/Questions";
 import HomePage from "./pages/HomePage";
 import Page404 from "./pages/Page404";
+import SingleAwardCycle from "./pages/admin/awardCycle/single/SingleAwardCycle";
 
 const routes = [
   {
@@ -47,11 +48,7 @@ const routes = [
   },
   {
     path: "/admin",
-    element: (
-      <DashboardLayout>
-        <AdminGuard />
-      </DashboardLayout>
-    ),
+    element: <DashboardLayout>{/* <AdminGuard /> */}</DashboardLayout>,
     children: [
       {
         path: "dashboard",
@@ -122,6 +119,10 @@ const routes = [
       {
         path: "award-cycles",
         element: <AwardCycles />,
+      },
+      {
+        path: "award-cycles/:id",
+        element: <SingleAwardCycle />,
       },
       {
         path: "users",

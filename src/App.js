@@ -13,6 +13,7 @@ import { SidebarProvider } from "./contexts/SidebarContext";
 import { LayoutProvider } from "./contexts/LayoutContext";
 import ChartJsDefaults from "./utils/ChartJsDefaults";
 import { AuthProvider } from "./contexts/JWTContext";
+import { AwardCycleProvider } from "./contexts/AwardCycleContext";
 
 // import { AuthProvider } from "./contexts/JWTContext";
 
@@ -28,7 +29,9 @@ function App() {
           <SidebarProvider>
             <LayoutProvider>
               <ChartJsDefaults />
-              <AuthProvider>{content}</AuthProvider>
+              <AuthProvider>
+                <AwardCycleProvider>{content}</AwardCycleProvider>
+              </AuthProvider>
             </LayoutProvider>
           </SidebarProvider>
         </ThemeProvider>

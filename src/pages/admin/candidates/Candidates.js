@@ -5,7 +5,7 @@ import FullTable from "../../../ui/tables/FullTable";
 import { Trash, Eye } from "react-feather";
 import { Link, useNavigate } from "react-router-dom";
 import NotyfContext from "../../../contexts/NotyfContext";
-
+import { useSearchParams } from "react-router-dom";
 //rtk query
 import {
   useGetAllCandidatesQuery,
@@ -13,6 +13,8 @@ import {
 } from "../../../redux/slices/candidates";
 
 const Candidates = () => {
+  const [searchParams] = useSearchParams();
+  const award_cycle = searchParams.get("award_cycle") ?? null;
   const notyf = useContext(NotyfContext);
   const [deleteCandidate] = useDeleteCandidateMutation();
   const navigate = useNavigate();

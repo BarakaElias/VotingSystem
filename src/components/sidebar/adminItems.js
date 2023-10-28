@@ -16,11 +16,11 @@ const adminSection = [
     icon: Info,
     title: "Dashboard",
   },
-  // {
-  //   href: "/admin/award-cycles",
-  //   icon: Award,
-  //   title: "Award Cycle",
-  // },
+  {
+    href: "/admin/award-cycles",
+    icon: Award,
+    title: "Award Cycle",
+  },
 ];
 
 const manageSection = [

@@ -1,4 +1,5 @@
 import React from "react";
+import { Badge } from "react-bootstrap";
 
 import PerfectScrollbar from "react-perfect-scrollbar";
 
@@ -24,6 +25,9 @@ const Sidebar = ({ items, showFooter = true }) => {
                 Afya Awards Voting System
               </span>
             </div>
+            <Badge bg="success" className="text-center">
+              AWARD 2023
+            </Badge>
             {/* <img src={logo} alt="logo" /> */}
           </a>
 

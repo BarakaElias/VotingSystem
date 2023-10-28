@@ -9,6 +9,7 @@ import {
   CloseButton,
 } from "react-bootstrap";
 import { Edit, Trash } from "react-feather";
+import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import FullTable from "../../../ui/tables/FullTable";
 import {
@@ -31,6 +32,9 @@ import { useNavigate } from "react-router-dom";
 let Yup = require("yup");
 
 const AwardCategories = () => {
+  const [searchParams] = useSearchParams();
+  const award_cycle = searchParams.get("award_cycle") ?? null;
+  console.log("Award cycle: ", award_cycle);
   const notyf = useContext(NotyfContext);
   const token = useSelector((state) => state.authSlice.token);
   console.log("token", token);
